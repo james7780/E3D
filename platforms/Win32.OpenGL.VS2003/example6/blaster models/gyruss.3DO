@@ -1,0 +1,107 @@
+! .3do 3D model (ver 3) filename c:\dev\e3d\gyruss.3DO
+! Created by Jum's 3D Model Editor ver 1.9
+! first, the vertices:
+vert 0.000 0.000 10.000
+vert 3.000 0.000 -9.000
+vert -3.000 0.000 -9.000
+vert -2.000 3.000 -9.000
+vert 2.000 3.000 -9.000
+vert 2.000 3.000 1.000
+vert -2.000 3.000 1.000
+vert 3.000 0.000 3.000
+vert -3.000 0.000 3.000
+vert 12.000 -4.000 -11.000
+vert -12.000 -4.000 -11.000
+vert 0.000 4.000 3.000
+vert 0.000 2.000 6.000
+vert 7.000 -2.000 1.000
+vert 8.000 -3.000 0.000
+vert 7.000 -3.000 1.000
+vert -7.000 -2.000 1.000
+vert -7.000 -3.000 1.000
+vert -8.000 -3.000 0.000
+vert 8.000 -2.000 -7.000
+vert -8.000 -2.000 -7.000
+vert 6.000 6.000 -10.000
+vert 2.000 3.000 -3.000
+vert -6.000 6.000 -10.000
+vert -2.000 3.000 -3.000
+! polygon normals:
+! then, the polygons:
+poly 3 7 6 12 none
+filling 0
+colour 0 0.273 0.375 0.992
+poly 3 6 13 12 none
+filling 0
+colour 0 0.273 0.375 0.992
+poly 3 13 7 12 none
+filling 0
+colour 0 0.273 0.375 0.992
+poly 4 7 4 5 6 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 4 7 9 3 4 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 4 5 2 8 6 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 4 8 1 13 6 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 4 9 7 13 1 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 4 4 3 2 5 none
+filling 0
+colour 0 0.984 0.023 0.039
+poly 4 8 2 3 9 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 3 8 9 1 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 3 15 14 20 none
+filling 0
+colour 0 0.008 0.992 0.000
+poly 3 14 16 20 none
+filling 0
+colour 0 0.008 0.992 0.000
+poly 3 16 15 20 none
+filling 0
+colour 0 0.008 0.992 0.000
+poly 3 17 19 21 none
+filling 0
+colour 0 0.008 0.992 0.000
+poly 3 18 17 21 none
+filling 0
+colour 0 0.008 0.992 0.000
+poly 3 19 18 21 none
+filling 0
+colour 0 0.008 0.992 0.000
+poly 3 2 10 8 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 3 11 3 9 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 3 10 2 8 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 3 3 11 9 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 3 24 4 25 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 3 5 22 23 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 3 25 4 24 none
+filling 0
+colour 0 0.992 0.992 0.984
+poly 3 5 23 22 none
+filling 0
+colour 0 0.992 0.992 0.984
+! must end off with 'end'...
+end

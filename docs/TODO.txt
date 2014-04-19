@@ -1,0 +1,29 @@
+Engine:
+
+1. Update scene format to include "model" command (eg: "model robot robot.obj") ***DONE***
+2. Update OBJ reading thing to read in colours (materials) *** DONE ***
+3. Named Cameras
+4. Named Lights
+5. Read lines from .OBJ ("l" command)
+6. Object handling:
+	- Object lists							*** DONE ***
+
+
+Examples:
+
+1. Load and display a single model (loadmodel.cpp)			*** DONE ***
+2. Load a scene from disk and display it (loadscene.cpp)		*** DONE ***
+3. Create a scene and animate it (createscene.cpp)			*** DONE ***
+4. Tailgunner								*** DONE ***
+5. Battlezone								*** DONE ***
+6. Tempest
+
+
+Docs:
+
+1. user Guide
+2. Reference (doxygen)
+
+
+- create all examples in Win32 first
+

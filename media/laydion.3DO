@@ -1,0 +1,475 @@
+! .3do 3D model (ver 3) filename c:\Old_Drive\dev\e3d\laydion.3DO
+! Created by Jum's 3D Model Editor ver 1.9
+! first, the vertices:
+vert -1.156 0.000 -1.469
+vert 0.281 0.000 -3.219
+vert 1.156 0.000 -1.469
+vert -0.281 0.000 -3.219
+vert 1.750 0.000 -2.938
+vert 1.406 0.031 -4.359
+vert 0.875 0.000 -4.359
+vert -1.750 0.000 -2.938
+vert -1.406 0.031 -4.359
+vert -0.875 0.000 -4.359
+vert 1.156 0.000 0.812
+vert -1.156 0.000 0.812
+vert -0.312 0.281 -3.500
+vert 0.312 0.281 -3.500
+vert 0.875 0.281 0.500
+vert -0.875 0.281 0.500
+vert 0.312 0.875 2.094
+vert -0.312 0.875 2.094
+vert -0.281 1.156 1.156
+vert 0.281 1.156 1.156
+vert -0.875 0.000 3.750
+vert -2.578 0.562 4.359
+vert -2.344 0.000 3.750
+vert -0.562 0.562 4.391
+vert 2.578 0.562 4.359
+vert 0.875 0.000 3.750
+vert 2.344 0.000 3.750
+vert 0.562 0.562 4.391
+vert 0.281 0.875 -1.469
+vert -0.281 0.875 -1.469
+vert 1.469 0.000 -1.469
+vert -1.469 0.000 -1.469
+vert -2.344 0.000 2.000
+vert -2.578 0.281 1.750
+vert 2.578 0.281 1.750
+vert 2.344 0.000 2.000
+vert 0.562 0.875 4.156
+vert -0.562 0.875 4.156
+vert -2.344 0.875 4.094
+vert 2.344 0.875 4.094
+vert 0.875 0.281 -4.125
+vert -0.875 0.281 -4.125
+vert 0.562 0.562 -1.750
+vert -0.562 0.562 -1.750
+vert 1.469 0.312 -4.094
+vert -1.469 0.312 -4.094
+vert -2.344 0.875 2.578
+vert -1.469 0.281 -1.750
+vert -1.750 0.281 -2.859
+vert 2.344 0.875 2.578
+vert 1.469 0.281 -1.750
+vert 1.750 0.281 -2.859
+! polygon normals:
+norm 0.000 -1.000 0.000
+norm 0.000 -1.000 0.000
+norm 0.004 -1.000 -0.023
+norm 0.059 -0.998 0.031
+norm -0.004 -1.000 -0.023
+norm -0.059 -0.998 0.031
+norm 0.000 -1.000 0.000
+norm 0.000 -1.000 0.000
+norm 0.000 -0.707 -0.707
+norm 0.000 -0.707 -0.707
+norm 0.000 0.743 0.669
+norm 0.000 0.743 0.669
+norm 0.000 -0.937 0.349
+norm 0.000 -0.937 0.349
+norm 0.000 0.958 0.287
+norm 0.000 0.958 0.287
+norm 0.000 -0.735 0.678
+norm -0.010 -0.749 0.663
+norm 0.000 -0.735 0.678
+norm 0.010 -0.749 0.663
+norm 0.000 0.994 -0.107
+norm 0.000 0.994 -0.107
+norm 0.000 0.960 -0.281
+norm 0.000 0.960 -0.281
+norm 0.000 -1.000 0.000
+norm 0.000 -1.000 0.000
+norm 0.000 -1.000 0.000
+norm 0.000 -1.000 0.000
+norm -0.705 -0.078 -0.705
+norm -0.377 -0.771 -0.514
+norm -0.768 -0.640 0.000
+norm -0.903 -0.426 0.046
+norm 0.903 -0.426 0.046
+norm 0.768 -0.640 0.000
+norm 0.377 -0.771 -0.514
+norm 0.705 -0.078 -0.705
+norm 0.000 -1.000 0.000
+norm 0.000 -1.000 0.000
+norm -0.669 -0.740 -0.064
+norm 0.000 -1.000 0.000
+norm 0.000 -1.000 0.000
+norm 0.669 -0.740 -0.064
+norm -0.792 -0.609 -0.053
+norm -0.862 -0.507 0.025
+norm -0.989 0.090 0.120
+norm 0.792 -0.609 -0.053
+norm 0.862 -0.507 0.025
+norm 0.989 0.090 0.120
+norm 0.861 0.494 0.120
+norm -0.861 0.494 0.120
+norm -0.012 0.653 0.758
+norm 0.012 0.653 0.758
+norm -0.028 0.600 0.800
+norm 0.028 0.600 0.800
+norm -0.828 0.359 -0.431
+norm -0.641 -0.506 -0.577
+norm 0.828 0.359 -0.431
+norm 0.641 -0.506 -0.577
+norm 0.735 0.677 -0.017
+norm 0.803 0.593 -0.063
+norm -0.803 0.593 -0.063
+norm -0.735 0.677 -0.017
+norm 0.625 0.752 -0.210
+norm -0.625 0.752 -0.210
+norm 0.007 0.640 -0.768
+norm -0.041 0.691 -0.722
+norm -0.007 0.640 -0.768
+norm 0.041 0.691 -0.722
+norm -0.906 0.421 -0.045
+norm -0.800 0.600 0.000
+norm 0.000 1.000 0.000
+norm 0.000 1.000 0.000
+norm -0.132 0.823 -0.553
+norm -0.707 0.707 0.000
+norm -0.689 0.725 -0.005
+norm 0.000 0.707 0.707
+norm -0.182 0.587 0.789
+norm -0.965 0.185 0.185
+norm -0.967 -0.068 0.245
+norm -0.972 0.006 -0.235
+norm -0.974 0.061 -0.220
+norm -0.291 0.937 -0.192
+norm 0.000 1.000 0.000
+norm 0.000 1.000 0.000
+norm 0.054 0.998 0.038
+norm 0.000 1.000 0.000
+norm 0.800 0.600 0.000
+norm 0.906 0.421 -0.045
+norm 0.132 0.823 -0.553
+norm 0.000 1.000 0.000
+norm 0.707 0.707 0.000
+norm 0.689 0.725 -0.005
+norm 0.182 0.587 0.789
+norm 0.000 0.707 0.707
+norm 0.291 0.937 -0.192
+norm 0.000 1.000 0.000
+norm 0.000 1.000 0.000
+norm -0.054 0.998 0.038
+norm 0.965 0.185 0.185
+norm 0.967 -0.068 0.245
+norm 0.974 0.061 -0.220
+norm 0.972 0.006 -0.235
+norm -0.204 0.939 -0.278
+norm 0.204 0.939 -0.278
+! then, the polygons:
+poly 3 3 2 1 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 1 2 4 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 6 2 5 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 7 2 6 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 4 9 8 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 10 9 4 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 12 11 1 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 1 11 3 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 4 2 13 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 13 2 14 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 16 15 12 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 12 15 11 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 18 17 16 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 16 17 15 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 18 19 17 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 17 19 20 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 23 22 21 none
+filling 0
+colour 0 0.383 0.000 0.000
+poly 3 21 22 24 none
+filling 0
+colour 0 0.383 0.000 0.000
+poly 3 27 26 25 none
+filling 0
+colour 0 0.383 0.000 0.000
+poly 3 25 26 28 none
+filling 0
+colour 0 0.383 0.000 0.000
+poly 3 19 29 20 none
+filling 0
+colour 0 0.773 0.773 0.773
+poly 3 30 29 19 none
+filling 0
+colour 0 0.773 0.773 0.773
+poly 3 30 14 29 none
+filling 0
+colour 0 0.000 0.773 0.773
+poly 3 13 14 30 none
+filling 0
+colour 0 0.000 0.773 0.773
+poly 3 31 2 3 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 1 4 32 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 32 4 8 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 5 2 31 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 16 33 12 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 34 33 16 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 34 23 33 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 22 23 34 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 35 27 25 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 36 27 35 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 15 36 35 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 11 36 15 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 36 26 27 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 11 26 36 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 15 26 11 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 23 21 33 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 33 21 12 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 12 21 16 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 17 26 15 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 26 17 28 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 37 28 17 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 16 21 18 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 24 18 21 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 18 24 38 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 15 17 20 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 19 18 16 none
+filling 0
+colour 0 0.383 0.383 0.383
+poly 3 39 24 22 none
+filling 0
+colour 0 0.773 0.000 0.000
+poly 3 25 28 40 none
+filling 0
+colour 0 0.773 0.000 0.000
+poly 3 38 24 39 none
+filling 0
+colour 0 0.773 0.773 0.000
+poly 3 40 28 37 none
+filling 0
+colour 0 0.773 0.773 0.000
+poly 3 41 2 7 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 14 2 41 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 10 4 42 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 42 4 13 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 43 15 29 none
+filling 0
+colour 0 0.773 0.773 0.773
+poly 3 29 15 20 none
+filling 0
+colour 0 0.773 0.773 0.773
+poly 3 19 16 30 none
+filling 0
+colour 0 0.773 0.773 0.773
+poly 3 30 16 44 none
+filling 0
+colour 0 0.773 0.773 0.773
+poly 3 14 43 29 none
+filling 0
+colour 0 0.000 0.773 0.773
+poly 3 30 44 13 none
+filling 0
+colour 0 0.000 0.773 0.773
+poly 3 7 45 41 none
+filling 0
+colour 0 0.773 0.773 0.000
+poly 3 45 7 6 none
+filling 0
+colour 0 0.773 0.773 0.000
+poly 3 42 46 10 none
+filling 0
+colour 0 0.773 0.773 0.000
+poly 3 10 46 9 none
+filling 0
+colour 0 0.773 0.773 0.000
+poly 3 47 22 34 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 39 22 47 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 47 38 39 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 18 38 47 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 34 18 47 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 1 16 12 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 44 16 1 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 48 1 32 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 44 1 48 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 8 48 32 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 49 48 8 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 46 8 9 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 49 8 46 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 44 48 13 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 49 13 48 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 13 49 42 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 42 49 46 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 37 50 40 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 50 25 40 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 35 25 50 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 50 17 35 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 50 37 17 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 11 15 3 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 3 15 43 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 51 3 43 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 31 3 51 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 14 51 43 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 51 14 52 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 41 52 14 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 45 52 41 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 51 5 31 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 5 51 52 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 45 5 52 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 6 5 45 none
+filling 0
+colour 0 0.000 0.000 0.773
+poly 3 18 34 16 none
+filling 0
+colour 0 0.773 0.000 0.000
+poly 3 15 35 17 none
+filling 0
+colour 0 0.773 0.000 0.000
+! must end off with 'end'...
+end

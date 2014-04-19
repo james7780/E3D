@@ -1,0 +1,250 @@
+This file is out of date: read e3d.html instead!
+
+
+                     EEEEE 3333  DDDD
+                     E         3 D   D
+                     EEE   3333  D   D
+                     E         3 D   D
+                     EEEEE 3333  DDDD
+
+                      3D Model Editor
+                        Version 1.4
+			of 18/7/1999
+                      By Jum Hig '98
+
+This doc updated 05:21 99/07/18
+
+This newer version of my 3D Model Editor was written because I was
+having great difficulty finding a useable free 3D Model Editor on
+the web. Because I needed a 3D model editor to create 3D objects
+for a game I was writing, I decided I may as well just write one
+quickly!
+
+When I started hacking a little demo together for the PSX, I decided
+that it would be nice to include support for .TMD files.
+
+FEATURES:
+~~~~~~~~
+- Load/Save 3D Studio ASCII models (limited support!).
+- Load/Save Truespace ASCII models (limited support!).
+- Load/Save PSX .TMD models (~60% complete, including texture stuff).
+- Load/Save cheap 'n easy .3DO format models (full support).
+- Full vertex editing capabilities.
+- Full polygon editing capabilities.
+- Texture mapping functionality.
+- Model transformations (can move/rotate/scale model).
+- Easy to learn.
+- Grid and snap-to-grid.
+- Zoom/Pan in editing windows (Pan? I dunno...).
+- Perspective display of model. (Full-screen preview coming soon!)
+- Uses DJGPP compiler with Allegro.
+
+GENERAL:
+~~~~~~~
+This program assumes some knowledge of how 3D models are put
+together. The program was written specifically with 3D game
+development in mind, as a way of creating 3D objects/models
+that can easily be used by a 3D game engine. The .3DO file
+format is used by my 3D game engine. (Details of this format
+can be found in "3do.txt").
+
+The two top windows in the editor are used to view different
+projections of the model (top, front or side views) and to
+select and move vertices. The current 3D cursor position is
+shown in these windows as a diagonal crosshair (X). The 3D
+cursor can be positioned anywhere in 3D space by clicking in
+these windows, providing the windows are not showing the same view.
+
+The perspective window shows an (almost) fully rendered view
+of the model. The view of the model in the perspective window
+can be changed using the buttons next to the window. Holding
+the left mouse button down and dragging in the perpective
+window will also rotate the model and move it up and down.
+The "centroid" of every polygon in the object (even polygons
+that are not visible) is displayed as a white dot. Right-clicking
+the white dot will also select the polygon (and all the vertices
+that comprise the polygon) for editing.
+ 
+
+CREATING MODELS:
+~~~~~~~~~~~~~~~
+There are 3 basic steps to create a 3D model with E3D:
+1. Create Vertices (verts).
+2. Create Polygons (polys) using these Vertices.
+3. Mapping textures (optional).
+
+To create a vertex:
+1. Position the 3D cursor where you want your new vertex to
+   appear in 3D space. (Switch on "SnapGrid" if you want to
+   make the cursor stick to the grid points).
+2. Select a colour using the RGB colour sliders.
+3. Click on "Add Vert" to add this vertex to the vertex list.
+
+The vertex will appear as a tiny coloured square in the 2 view
+windows (Note: the vertex colour here is only used for editing
+purposes, and is not used or saved in the model).
+
+To create a polygon (or "face"):
+1. Select the vertices that you want to use to define the
+   "corners" of this polygon.
+   Vertices must be selected in anticlockwise order (as is
+   the usual fashion), when looking at the object from the
+   outside.
+   Vertices are selected by positioning the 3D cursor near
+   a vertex, then pressing the SPACE bar.
+   Up to 6 vertices can be selected.
+   The last selected vertex can be unselected with the
+   BACKSPACE key. Pressing the C key will unselect all.
+2. Click the "Add Poly" button.
+
+The polygon will appear in the perspective window (assuming  
+that it is facing towards the perspective window "camera").
+A wireframe outline of the polygon will also be shown in the
+two edit windows.
+NB: If you messed up and the polygon is facing the wrong way,
+you can "reverse" the polygon by clicking the "Rev Poly"
+button. Or you can click on "Del Poly" to delete it, then
+create it again.
+
+Other functions to create vertices:
+The "Mirror" button will mirror all selected vertices
+"along" one of the 3 axes.
+The "Arc" button will create an arc of n vertices through m
+degrees. These verts can then be rotated and xlated to
+their final position. (not complete).
+
+
+EDITING MODELS:
+~~~~~~~~~~~~~~
+
+1. Editing/Deleting Vertices:
+
+To move a vertex: select it, then drag it with the right
+mouse button.
+
+Individual vertex  parameters can be modified by using the
+"Edit Vert" dialog box. First select a vertex as explained
+above, then click "Edit Vert". The dialog box that pops up
+will allow you to edit the X, Y and Z co-ordinates of the
+vertex, and the RGB components of the vertex's editing colour).
+
+Vertices can be removed from the model by selecting and
+clicking "Del Vert". Note that the program checks whether
+the vertex "belongs" to any of the model's polygons, and
+if so, will not allow you to delete it (otherwise the
+model would be "broken"). To delete a vertex, you will
+first have to delete all the polygons it belongs to.
+
+
+2. Editing Polygons
+
+Right-click in the middle of a polygon in the perspective
+view. The polygomn will be selected, and the properties of the
+polygon will be displayed in the poly properties area. Click
+the cycle-buttons to change the poly light-shading (on/off)
+[not implemented yet], gouraud-shading (on/off) [not implemented
+yet], and filling type (flat, colour-interpolated, or textured).
+
+The polygon's "flat-shaded" colour, and vertex colours (for
+colour-interpolated rendering modes), are also displayed as
+7 colour bars. Left-click a bar to copy the current RGB
+slider colour to that bar. Right-click a bar to copy it's
+colour top the RGB sliders.
+
+All changes to a poly's properties take effect immediately.
+
+
+3. Deleting Polygons:
+
+Polygons can be deleted by clicking the "Del Poly" button.
+First select a polygon by right-clicking in the middle of
+the polygon in the perspective window (you might have to
+rotate the perspective window view). The vertices of the
+selected polygon will be highlighted in the two edit
+windows. Then click "Del Poly" to remove the highlighted
+polygon.
+If you don't select a polygon before clicking "Del Poly",
+the last polygon created will be removed. This is useful
+for undoing a mistake when creating polygons, but is
+probably not too wise to use on loaded models.
+
+
+4. Model Transformations:
+
+The "Rotate", "Scale" & "Xlate" buttons bring up dialogs
+that allow you to transform the model in 3 dimensions.
+They are pretty straightforward. Rotate works with
+degrees. All transformations work on selected vertices
+(you can select all vertices with SHIFT-SPACE).  Other
+transformations (shear, noise, etc) will be included in
+future versions on request. A user-definable "transformation
+matrix" function might be a good idea too. Hmmm...
+
+
+5. Texture-Mapping
+
+To bring up the texture-mapping window, click the "Texture"
+button in the right-hand view window. The current texture
+is shown in the top-left corner of this window (max. size
+of texture = 256x256). Below are shown the "thumbnail"
+previews of the textures in the other 15 "texture pages".
+Clicking on a thumbnail will make it the current texture.
+Use the "Load TIM" button to load a .TIM image into the
+current texture page.
+Use the "Load TIM List" button to load a whole bank of
+textures. TIM list file has the extension .LST, and just
+contains a list of TIM file names (max. 16), each on a
+seperate line.
+To map a texture to a poly: Load a texture. Select a poly,
+then cycle the filling-type to "texture". By default, the
+texture coordinates will all be 0,0 (top-left corner of
+the texture). Drag the texture co-ordinates to their
+positions on the texture. The texture co-ordinates are
+connected by lines of diminishing brightness (ie: tex
+coord 0 and 1 are at either end of the brightest line).
+It works, but you have to fiddle around a bit. I will
+improve the interface in future releases.  
+
+
+Notes on Loading/Saving and File Formats:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To save a file as a certain format, just make sure the
+file has the right extension (.3DO, .COB, .ASC or .TMD) in
+the Save Model dialog.
+When loading model files, the format of the file is
+assumed from it's extension.
+There is limited support at the moment for .COB, .ASC,
+and .TMD files. Total number of vertices and polygons is
+presently limited to 512 each, since memory is pre-allocated
+(number may change).
+
+All the program bothers to read from the .COB files and
+.ASC files is the vertex co-ordinates and the polygon
+vertex indices. Materials are not supported yet.
+
+When writing .COB or .ASC files, material info is
+included, but is arbitrary. 3DS .ASC files are output
+in "tri-mesh" format.
+
+PSX .TMD file support is limited at present to single
+colour, colour-gradated (???), and texmapped polys. Normals
+are not supported (but will be soon). Texture-mapping support
+is not complete (but will be soon).
+
+Any suggestions regarding model file formats are
+welcomed, specially as the current support is dismal.
+(Bear in mind that this editor is designed purely with
+3D games models in mind).
+
+If you do use the progam, your comments and/or suggestions
+are welcomed.
+
+Email: jum_the_hig@geocities.com
+ 
+I am working on this program fairly frequently, so please
+check back at my website
+www.geocites.com/siliconvalley/pines/6131
+every once in a while for a newer version.
+
+Hope you find E3D useful - James
+    

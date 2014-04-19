@@ -1,0 +1,2 @@
+rgb_f E3D_Scene::GetBackColour()
+RGB32 E3D_Scene::GetBackColour()

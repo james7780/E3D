@@ -1,0 +1,47 @@
+Platform-specific Implementation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+The "platform-specific" part of the lib is implemented in the "E3D_PlatformSpecific.cpp" files in each platform's folder.
+
+E3D_PlatformSpecific.h defines an interface which all supported platforms must implement.
+
+If you (for example) want to implement E3D on the Linux or Mac platform, then you would create a "Linux" or "Mac" folder under the platforms folder, copy E3D_PlatFormSpecific.cpp file from one of the existing E3D platform folders (probably best to copy from a platform which is similar to the one you want to implement), and edit E3D_PlatformSpecific.cpp in your new platform folder.
+
+Your new platform would also require a make file, or project file or build file. See the existing platforms make files to see how E3D lib should be built. (Basically the lib should be built from all the files in the src directory, plus E3D_PlatformSpecific.cpp in your platform directory).
+
+Realistically, your platform is actually the dev environment that you will be using (eg: the Win32.OpenGL platform is actually Visual C++ with OpenGL with GLFW library, and the PSP platform is actually the PSPSDK dev environment). So a "linux" platform would probably actually be Linux/SDL/OpenGL...
+
+
+Platform-specific functions:
+
+static void RenderScene(E3D_Scene *scene, float viewWidth, float viewHeight, bool clear)
+
+	scene = pointer to the scene object to render
+	width = screen width
+	height = screen height
+
+	RenderScene() uses the existing host render context
+	RenderScene() sets up lighting according to the scene's light objects 
+	RenderScene() sets up the camera according to the scene's camera objects
+	RenderScene() draws all visible 3D objects in all object lists in the scene
+
+	Notes:
+	1. Your application may maintain multiple scene objects if required.
+	2. Your application may call Scene.Render() multiple times to render
+           multiple viewports on the same display.
+
+
+static void DrawModel(E3D_Model *pModel)
+
+	model = pointer to the model to render
+
+	DrawModel() uses the current render/transform context
+	DrawModel() renders all visible polygons and lines in the model
+	Drawmodel() is usually only used by RenderScene()
+
+
+JH 30/5/2007
+
+
+

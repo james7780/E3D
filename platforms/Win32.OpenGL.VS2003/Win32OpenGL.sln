@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32OpenGL", "Win32OpenGL.vcproj", "{888E9FAF-C232-478E-B5AE-7CDB275CE4EE}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{888E9FAF-C232-478E-B5AE-7CDB275CE4EE}.Debug.ActiveCfg = Debug|Win32
+		{888E9FAF-C232-478E-B5AE-7CDB275CE4EE}.Debug.Build.0 = Debug|Win32
+		{888E9FAF-C232-478E-B5AE-7CDB275CE4EE}.Release.ActiveCfg = Release|Win32
+		{888E9FAF-C232-478E-B5AE-7CDB275CE4EE}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

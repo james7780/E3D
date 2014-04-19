@@ -1,0 +1,68 @@
+3D Graphics Engine File Formats - by Jum Hig '98
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Updated 18/7/1999
+
+
+1. Model Format (.3DO files) (ver 3)
+~~~~~~~~~~~~~~~
+.3DO files are editable text files (ascii).
+Each line must begin with a valid command.
+The commands are:
+
+!
+vert
+norm
+poly
+colour
+shade
+gouraud
+filling
+texture
+texmap
+end
+
+Description of commands:
+
+!
+This marks the line as a comment line (can also use '#').
+
+vert fX fY fZ
+This specifies a vertex co-ordinate.
+
+norm fX fY fZ
+This specifies a normal vector. 
+
+poly inumverts, iindex1, iindex2, ..., iindexn, sztexmap
+This specifies a polygon consisting of inumvert vertices which
+are iindex1, iindex2 etc.
+
+colour n fR fG fB
+This specifies the colour of vertex n of the current poly.
+If n=0 specifies colour of entire poly if filling=0.
+
+texture n
+This specifies the texture map index. Default 0.
+
+texvert n fU fV
+This specifies the texture co-ordinate for vertex n of the current
+polygon, in texture sztexture above.
+
+shade 0/1
+This specifies whether the poly is to be light-shaded or not.
+Default 0.
+
+gouraud 0/1
+This specifies whether gouraud shading is to be used (uses normals).
+Default 0.
+
+filling 0/1/2
+Type of poly rendering - 0 = solid colour, 1 = colour gradient,
+2 = texture-mapped.
+
+end
+Marks the end of the file (required!).
+
+
+
+Take a look at an example .3do file for clarification.

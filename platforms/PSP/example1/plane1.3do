@@ -1,0 +1,233 @@
+! .3do 3D model (ver 3) filename e:\Dev\OpenGL\Blaster2\models\plane1.3DO
+! Created by Jum's 3D Model Editor ver 1.9
+! first, the vertices:
+vert 6.001 -0.443 -4.380
+vert -5.993 -0.443 -4.386
+vert 0.001 -0.443 4.596
+vert 6.001 -1.043 -7.404
+vert 6.001 -0.443 -7.404
+vert -5.999 -0.443 -7.404
+vert -5.999 -1.043 -7.404
+vert 6.013 -1.031 -4.482
+vert 6.001 -0.443 -4.380
+vert -5.993 -0.443 -4.386
+vert -6.001 -1.037 -4.446
+vert 6.016 -1.034 -4.482
+vert -5.995 -1.022 -4.446
+vert 0.007 -1.043 4.764
+vert 0.151 1.585 -7.380
+vert 0.151 5.185 -7.380
+vert -0.149 5.185 -7.380
+vert -0.149 1.585 -7.380
+vert 0.151 1.585 -2.880
+vert 0.151 5.185 -5.898
+vert -0.149 5.185 -5.898
+vert -0.149 1.585 -2.880
+vert -1.499 0.157 4.596
+vert -1.060 1.218 4.596
+vert 0.001 1.657 4.596
+vert 1.061 1.218 4.596
+vert 1.501 0.157 4.596
+vert 1.061 -0.903 4.596
+vert 0.575 -1.228 4.596
+vert -0.574 -1.228 4.596
+vert -1.060 -0.903 4.596
+vert -1.499 0.157 -7.404
+vert -1.060 1.218 -7.404
+vert 0.001 1.657 -7.404
+vert 1.061 1.218 -7.404
+vert 1.501 0.157 -7.404
+vert 1.061 -0.903 -7.404
+vert 0.575 -1.229 -7.404
+vert -0.573 -1.229 -7.404
+vert -1.060 -0.903 -7.404
+vert -1.499 0.150 4.593
+vert -1.060 1.211 4.593
+vert 0.001 1.650 4.597
+vert 1.061 1.211 4.597
+vert 1.501 0.150 4.594
+vert 1.061 -0.910 4.594
+vert 0.575 -1.236 4.594
+vert -0.574 -1.236 4.593
+vert -1.060 -0.910 4.593
+vert 0.032 -0.434 10.543
+vert -0.530 0.681 7.593
+vert 0.000 0.900 7.543
+vert 0.531 0.681 7.543
+! polygon normals:
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+norm 0.531 0.681 7.543
+! then, the polygons:
+poly 4 32 33 24 23 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 4 33 34 25 24 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 34 35 26 25 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 35 36 27 26 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 36 37 28 27 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 38 39 30 29 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 28 37 38 29 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 30 39 40 31 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 40 37 36 32 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 4 23 31 40 32 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 33 32 35 34 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 3 32 36 35 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 4 37 40 39 38 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 3 50 49 41 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 3 47 50 46 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 3 49 50 48 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 3 45 46 50 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 3 47 48 50 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 41 42 51 50 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 3 51 52 50 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 3 52 53 50 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 4 44 45 50 53 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 16 17 18 15 none
+filling 0
+colour 0 0.914 0.805 0.461
+poly 4 18 22 19 15 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 4 15 19 20 16 none
+filling 0
+colour 0 0.914 0.805 0.461
+poly 4 16 20 21 17 none
+filling 0
+colour 0 0.914 0.805 0.461
+poly 4 17 21 22 18 none
+filling 0
+colour 0 0.914 0.805 0.461
+poly 4 19 22 21 20 none
+filling 0
+colour 0 0.914 0.805 0.461
+poly 4 42 43 52 51 none
+filling 0
+colour 0 0.102 0.313 0.961
+poly 4 43 44 53 52 none
+filling 0
+colour 0 0.102 0.313 0.961
+poly 3 2 3 1 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 3 1 3 2 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 4 5 6 7 4 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 7 11 8 4 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 4 8 9 5 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 5 9 10 6 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 6 10 11 7 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 4 8 11 10 9 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 3 13 14 12 none
+filling 0
+colour 0 0.984 0.602 0.016
+poly 3 12 14 13 none
+filling 0
+colour 0 0.984 0.602 0.016
+! must end off with 'end'...
+end

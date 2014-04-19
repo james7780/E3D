@@ -1,0 +1,39 @@
+3D Graphics Engine File Formats - by Jum Hig '98
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Updated 08/2006
+
+
+
+2. Scene File Format (.scn files)
+~~~~~~~~~~~~~~~
+
+The scene file has a similar format to the model file, but
+has different commands:
+
+Comments:
+# all comment lines start with a '#'
+# everything after the # on that line is ignored
+
+Lights:
+light type, fX, fY, fZ, fR, fG, fB
+(where type = "omni" or "distant")
+
+Camera:
+camera fX, fY, fZ, fdX, fdY, fdZ, fuX, fuY, fuZ, fviewangle
+
+Model:
+model name filename
+
+Object:
+object "filename.3do", fX, fY, fZ, frX, frY, frZ, fsX, fsY, fsZ
+ 
+"end" to end file
+
+Take a look at an example .scn file for clarification.
+
+
+
+		
+
+ 

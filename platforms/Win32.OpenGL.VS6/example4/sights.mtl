@@ -1,0 +1,11 @@
+# Exported from Wings 3D 0.98.32a
+# JH Note: diffuse value > 1.0 because we want to overilluminate sights
+newmtl default
+Ns 0.00000e+0
+d 1.00000
+illum 2
+Kd 3.00000 3.00000 3.00000
+Ka 1.00000 1.00000 1.00000
+Ks 1.00000 1.00000 1.00000
+Ke 1.00000 1.00000 1.00000
+

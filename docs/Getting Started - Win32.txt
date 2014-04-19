@@ -1,0 +1,14 @@
+Getting started - Win32
+~~~~~~~~~~~~~~~~~~~~~~~
+
+You will need Visual Studio 6 (or later) installed.
+
+1. Double-click on Win32OpenGL.dsw in the platforms/Win32.OpenGL directory 
+2. Select build or rebuild all from the Visual Studio menu
+
+3. Build the example programs using Visual Studio
+4. Study the example programs to see how the lib is used
+
+5. #include "E3D.h" in your own programs
+6. Add Win32OpenGL.lib to your projects
+

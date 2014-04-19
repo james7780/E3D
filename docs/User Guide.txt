@@ -1,0 +1,55 @@
+E3D User Guide
+~~~~~~~~~~~~~~
+
+The E3D library is a simple "3D Scene Library", intended to make the creation of 3D scenes for games and apps as easy as possible.
+
+A simple 3D scene is composed from a light, a camera, and some 3D objects.
+
+A more complex 3D scene will have multiple lights, multiple cameras, and many 3D objects.
+
+A tree view of the scene's structure looks like this:
+
++ SCENE
+    |
+    + Lights
+    |
+    + Cameras
+    |
+    + Models
+    |
+    + Object Lists
+        |
+        + Objects (Instances)
+
+Up to 8 lights are supported.
+Up to n cameras are supported.
+Up to n models are supported.
+UP to n object instances are supported.	
+       
+
+
+Every 3D object in a scene is an "instance" of a 3D model. For example, your scene may need to have 13 trees in it at different positions and scales (sizes). To accomplish this, you will need to load a 3D model of a tree into your scene, and then create 13 3D objects at the correct position and scale, that all reference the 3D tree model.
+
+The scene organises the object instances in "object lists".
+
+
+Basic code required to create a 3D scene:
+
+E3D_Scene scene;				// the scene object
+scene.Start()					// reset the 3D scene
+scene.AddModel(modelname, filename);		// add a model to the scene (not visible/drawable)
+scene.AddObject(0, modelname)			// add an object to the scene's first object list 
+scene.GetObject(0, 0)->SetPosition(x, y, z);	// set position of the first object in the scene's first object list
+scene.Render(width, height, true);		// draw the scene using the relevant driver
+
+See example1 to example6
+
+
+Limitations:
+
+1. Only wireframe and flat-shaded polygons are supported (so far) (no textures).
+2. Each model can have a maximum of about 2000 vertices or polygons (see E3D.h).
+3. Each scene can have a maximum of about 2000 models.
+4. Only the first light and the first camera in the scene are used (so far).
+
+JH 1/4/2007

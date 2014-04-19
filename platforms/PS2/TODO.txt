@@ -1,0 +1,3 @@
+PS2 implementation of E3D not done yet.
+
+Needs to be  implemented using PS2 DreamGL or similar.

@@ -1,0 +1,24 @@
+Getting started - PSP
+~~~~~~~~~~~~~~~~~~~~~
+
+Installation:
+
+1. Copy E3D to your PSPSDK's psp directory (eg: C:/pspdev/psp)
+
+
+
+Test Installation:
+
+2. Start up the PSPSDK dev environment
+
+3. To make sure everything's working, build the sample program:
+	>cd e3d/platforms/PSP/example1
+	>make
+
+
+Using E3D in Your Own Programs:
+
+4. #include "E3D.h" in your own programs
+
+5. link to libe3d.a
+

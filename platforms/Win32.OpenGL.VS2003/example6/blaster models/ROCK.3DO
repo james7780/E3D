@@ -1,0 +1,106 @@
+! .3do 3D model (ver 3) filename c:\Dev\E3D\ROCK.3DO
+! Created by Jum's 3D Model Editor ver 1.9
+! first, the vertices:
+vert 3.016 5.544 8.304
+vert -5.616 6.248 8.584
+vert -7.440 -3.456 7.064
+vert 3.632 -4.768 8.000
+vert 5.912 6.160 -6.568
+vert -3.976 5.672 -8.000
+vert -3.376 -5.208 -6.728
+vert 4.592 -3.112 -8.000
+vert 6.984 -6.752 0.000
+vert 8.000 0.000 0.000
+vert 8.000 0.000 -8.000
+vert 8.000 8.000 0.000
+vert 6.688 -0.016 8.000
+vert -8.000 8.000 0.000
+vert -8.000 0.000 0.000
+vert -8.496 0.976 -7.008
+vert -8.000 -8.000 0.000
+vert -7.744 0.152 8.464
+! polygon normals:
+! then, the polygons:
+poly 3 4 1 13 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 7 17 8 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 4 9 4 13 10 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 14 1 2 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 4 14 2 18 15 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 11 5 8 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 9 10 8 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 4 5 11 10 12 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 10 1 12 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 4 15 16 6 14 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 4 7 16 15 17 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 17 15 3 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 8 4 9 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 8 3 4 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 8 17 3 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 8 10 11 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 8 16 7 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 8 6 16 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 8 5 6 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 18 2 1 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 3 18 1 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 4 3 1 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 5 12 1 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 6 5 1 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 14 6 1 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 10 13 1 none
+filling 0
+colour 0 0.863 0.518 0.290
+poly 3 3 15 18 none
+filling 0
+colour 0 0.863 0.518 0.290
+! must end off with 'end'...
+end

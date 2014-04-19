@@ -1,0 +1,38 @@
+# lib3d test scene
+# First, lights
+#
+#light ambient 0.3 0.3 0.3
+light distant -0.707 -0.707 0.0   1.0 1.0 1.0
+light omni 10.0 10.0 2.0   1.0 0.5 0.5
+
+# set fog parameters
+fog 0.4 0.6 0.4 300.0
+
+#set render distance
+renderdistance 500.0
+
+# set background colour to match fog
+backcolour 0.4 0.6 0.4
+
+#then camera
+camera 10.0 25.0 -300.0   0.0 0.0 1.0   0.0 1.0 0.0   40.05
+
+# ground texture
+#texture ground.pcx
+
+# 3D models
+model robot robot.obj
+model tree tree.3do
+
+# then action, I mean objects
+object robot 0.0 0.0 0.0   0.0 0.0 0.0   1.0 1.0 1.0   0
+object tree 15.0 0.0 0.0   0.0 0.0 0.0   3.0 3.0 3.0   0
+object tree -15.0 0.0 0.0   0.0 0.0 0.0   2.0 2.0 2.0   0
+object tree 0.0 0.0 -15.0   0.0 0.0 0.0   1.0 1.0 1.0   0
+
+# landscape object
+#landscape scape1.3do 0.0 0.0 0.0   0.0 0.0 0.0   5.0 5.0 5.0
+
+# and don't forget the end marker
+end
+

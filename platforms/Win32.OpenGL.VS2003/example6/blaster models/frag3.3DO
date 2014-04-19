@@ -1,0 +1,30 @@
+! .3do 3D model (ver 3) filename e:\Dev\OpenGL\Blaster2\models\frag3.3DO
+! Created by Jum's 3D Model Editor ver 1.9
+! first, the vertices:
+vert -0.500 -1.000 -0.500
+vert -0.500 -1.000 0.500
+vert 0.500 -1.000 0.500
+vert 0.500 -1.000 -0.500
+vert 0.000 0.500 0.000
+! polygon normals:
+! then, the polygons:
+poly 3 1 4 5 none
+filling 0
+colour 0 0.313 0.789 0.578
+poly 3 2 1 5 none
+filling 0
+colour 0 0.555 0.547 0.539
+poly 3 3 2 5 none
+filling 0
+colour 0 0.313 0.789 0.578
+poly 3 4 3 5 none
+filling 0
+colour 0 0.500 0.500 0.500
+poly 3 4 1 2 none
+filling 0
+colour 0 0.555 0.734 0.539
+poly 3 2 3 4 none
+filling 0
+colour 0 0.500 0.500 0.500
+! must end off with 'end'...
+end

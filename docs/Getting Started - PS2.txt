@@ -1,0 +1,14 @@
+Getting started - PS2
+~~~~~~~~~~~~~~~~~~~~~
+
+*** PS2 platform driver not implemented yet! ***
+
+
+1. Start up the PS2SDK dev environment
+2. To make sure everything's working, build the sample program:
+	CD e3d/platforms/PS2/example1
+	make
+
+
+3. #include "E3D.h" in your own programs
+4. link to libe3d.a
