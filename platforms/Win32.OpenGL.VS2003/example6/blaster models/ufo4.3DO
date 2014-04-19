@@ -1,0 +1,119 @@
+! .3do 3D model (ver 3) filename e:\Dev\OpenGL\Blaster2\models\ufo4.3DO
+! Created by Jum's 3D Model Editor ver 1.9
+! first, the vertices:
+vert 5.000 1.000 0.000
+vert 4.045 1.000 2.939
+vert 1.545 1.000 4.755
+vert -1.545 1.000 4.755
+vert -4.045 1.000 2.939
+vert -5.000 1.000 -0.000
+vert -4.045 1.000 -2.939
+vert -1.545 1.000 -4.755
+vert 1.545 1.000 -4.755
+vert 4.045 1.000 -2.939
+vert 5.000 -1.000 0.000
+vert 4.045 -1.000 2.939
+vert 1.545 -1.000 4.755
+vert -1.545 -1.000 4.755
+vert -4.045 -1.000 2.939
+vert -5.000 -1.000 -0.000
+vert -4.045 -1.000 -2.939
+vert -1.545 -1.000 -4.755
+vert 1.545 -1.000 -4.755
+vert 4.045 -1.000 -2.939
+vert 0.000 3.000 0.000
+vert 0.000 -3.000 0.000
+! polygon normals:
+! then, the polygons:
+poly 3 3 4 21 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 4 5 21 none
+filling 0
+colour 0 0.984 0.664 0.000
+poly 3 5 6 21 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 6 7 21 none
+filling 0
+colour 0 0.984 0.664 0.000
+poly 3 7 8 21 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 8 9 21 none
+filling 0
+colour 0 0.984 0.664 0.000
+poly 3 9 10 21 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 10 1 21 none
+filling 0
+colour 0 0.984 0.664 0.000
+poly 3 1 2 21 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 2 3 21 none
+filling 0
+colour 0 0.984 0.664 0.000
+poly 3 20 19 22 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 19 18 22 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 18 17 22 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 17 16 22 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 16 15 22 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 15 14 22 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 14 13 22 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 13 12 22 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 12 11 22 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 3 11 20 22 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 4 18 19 9 8 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 4 9 19 20 10 none
+filling 0
+colour 0 0.039 0.164 0.586
+poly 4 10 20 11 1 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 4 1 11 12 2 none
+filling 0
+colour 0 0.039 0.164 0.586
+poly 4 2 12 13 3 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 4 3 13 14 4 none
+filling 0
+colour 0 0.039 0.164 0.586
+poly 4 4 14 15 5 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 4 5 15 16 6 none
+filling 0
+colour 0 0.039 0.164 0.586
+poly 4 6 16 17 7 none
+filling 0
+colour 0 0.969 0.289 0.031
+poly 4 7 17 18 8 none
+filling 0
+colour 0 0.039 0.164 0.586
+! must end off with 'end'...
+end
