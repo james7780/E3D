@@ -1,3 +1,6 @@
+#Ignore blaster audio files
+platforms/Win32.OpenGL.VS2003/example6/blaster audio
+
 #################
 ## Eclipse
 #################
