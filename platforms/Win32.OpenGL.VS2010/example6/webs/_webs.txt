@@ -1,0 +1,26 @@
+Web		Name		Description
+00.web		FLATLAND 1	10 segments
+01.web		V1		10 segments
+02.web		U1		10 segments
+03.web		WAVE 1		11 segments
+04.web		OVAL 1		12 segments
+05.web		RECTANGLE 1	12 segments
+06.web		TRIANGLE 1	12 segments
+07.web		STARDUST	20 segments
+08.web		FLATLAND 2	12 segments
+09.web		V2		13 segments
+10.web		U2		13 segments
+11.web		WAVE 2		15 segments !?
+12.web		OVAL 2		18 segments !? 
+13.web		RECTANGLE 2	16 segments
+14.web		TRIANGLE 2	15 segments
+15.web		MINUS		20 segments
+16.web		UNFLATLAND	14 segments
+17.web		BROKEN V	15 segments
+18.web		NOT OVAL	16 segments
+19.web		THE CLAW	15 segments
+
+
+TODO:
+2. fix WAVE 2 (make mor elike "HORNS"
+3. fix OVAL 2 (reduce to 16 segments)
