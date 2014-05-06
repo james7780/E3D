@@ -180,6 +180,9 @@ void StartupSound()
     //md_mode |= DMODE_SOFT_SNDFX;
 	//md_mode = DMODE_STEREO | DMODE_SURROUND | DMODE_16BITS | DMODE_SOFT_MUSIC | DMODE_SOFT_SNDFX.
 	md_mode = DMODE_16BITS | DMODE_SOFT_MUSIC | DMODE_SOFT_SNDFX;
+	//md_device = 0;      /* device */
+	//md_mixfreq;     /* mixing frequency */
+
     if (MikMod_Init(""))
 		{
 		fprintf(stderr, "MikMod: Could not initialize sound, reason: %s\n",
@@ -292,7 +295,8 @@ void WFPlaySound(int channel, int sampleIndex)
 		{
 		if (samples[sampleIndex])
 			{
-			Sample_Play(samples[sampleIndex], 0, 0);
+			SBYTE voice = Sample_Play(samples[sampleIndex], 0, 0);
+			//Voice_SetVolume(voice, 160);
 			}
 		}
 }
@@ -1217,16 +1221,16 @@ int main(void) {
 
     // Open OpenGL window
     if( !glfwOpenWindow( VIEW_WIDTH, VIEW_HEIGHT, 0,0,0,0, 0,0, scr_mode ) )
-    {
+		{
         glfwTerminate();
         return 0;
-    }
+		}
     glfwSetWindowTitle( "E3DOO Win32/OpenGL Example6" );
 
 	glfwSetWindowSizeCallback( ResizeWindow );
 
-    // Disable vertical sync (on cards that support it)
-    glfwSwapInterval( 1 );
+    // Set vertical sync (number of frames before swapping buffers)
+    glfwSwapInterval(2);
 
 	// Set up our OpenGL env and build our display lists
 	printf( "InitGL() returned %d\n", InitGL() );
@@ -1423,7 +1427,7 @@ int main(void) {
 			while( RUNSTATE_RUNNING == runState )
 				{
 				// fps limiter
-				while((glfwGetTime() - startTime) < 0.033) ;
+				while((glfwGetTime() - startTime) < 0.016) ;
 				startTime = glfwGetTime();
 
 				// Get time and mouse position
@@ -1443,18 +1447,20 @@ int main(void) {
 				}
 				frames ++;
 
-				// animate
-				//dz += 0.02f;
-
 				// Set player position and rotation
 				float playerAngle;
 				if(0 == playerDying)
 					{
 					pObject = Scene.GetObject(PLAYER_LIST, PLAYER1_ID);
+					// interpolate player position towards "current" (target) segment
 					Vector p;
-					playerAngle = GetTubeSegmentCentreAngle(&tube, currentSegment, p); 
-					pObject->position.x = p.x; 
-					pObject->position.y = p.y; 
+					float segmentAngle = GetTubeSegmentCentreAngle(&tube, currentSegment, p);
+					E3D::Vector v(p.x - pObject->position.x, p.y - pObject->position.y, 0.0f);
+					if (v.GetLength() > 0.75f)
+						v.SetLength(0.75f);
+					pObject->position += v;
+					// Interpolate player rotation towards "current" (target) segment
+					playerAngle = pObject->rotation.z + ((segmentAngle - pObject->rotation.z) * 0.2f);
 					pObject->SetRotation(0.0f, 0.0f, playerAngle);
 					}
 
