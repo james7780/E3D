@@ -1515,10 +1515,15 @@ int main(void) {
 				if(0 == playerDying)
 					{
 					pObject = Scene.GetObject(PLAYER_LIST, PLAYER1_ID);
+					// interpolate player position towards "current" (target) segment
 					Vector p;
-					playerAngle = GetTubeSegmentCentreAngle(&tube, currentSegment, p); 
-					pObject->position.x = p.x; 
-					pObject->position.y = p.y; 
+					float segmentAngle = GetTubeSegmentCentreAngle(&tube, currentSegment, p);
+					E3D::Vector v(p.x - pObject->position.x, p.y - pObject->position.y, 0.0f);
+					if (v.GetLength() > 0.75f)
+						v.SetLength(0.75f);
+					pObject->position += v;
+					// Interpolate player rotation towards "current" (target) segment
+					playerAngle = pObject->rotation.z + ((segmentAngle - pObject->rotation.z) * 0.2f);
 					pObject->SetRotation(0.0f, 0.0f, playerAngle);
 					}
 
