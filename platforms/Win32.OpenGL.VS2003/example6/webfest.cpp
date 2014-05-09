@@ -49,7 +49,7 @@
 #include "resource.h"
 #include <gl\gl.h>					// Header File For The OpenGL32 Library
 #include <gl\glu.h>					// Header File For The GLu32 Library
-#include <gl\glaux.h>				// Header File For The Glaux Library
+//#include <gl\glaux.h>				// Header File For The Glaux Library
 #include "../common/glfw.h"			// Header File for the GL Framwork Lib
 #include <mikmod.h>					// Header file for MikMod Audio library
 #include "hiscore.h"				// generic high-score module
@@ -1423,7 +1423,7 @@ int main(void) {
 			while( RUNSTATE_RUNNING == runState )
 				{
 				// fps limiter
-				while((glfwGetTime() - startTime) < 0.033) ;
+				while((glfwGetTime() - startTime) < 0.016) ;
 				startTime = glfwGetTime();
 
 				// Get time and mouse position
@@ -1443,18 +1443,20 @@ int main(void) {
 				}
 				frames ++;
 
-				// animate
-				//dz += 0.02f;
-
 				// Set player position and rotation
 				float playerAngle;
 				if(0 == playerDying)
 					{
 					pObject = Scene.GetObject(PLAYER_LIST, PLAYER1_ID);
+					// interpolate player position towards "current" (target) segment
 					Vector p;
-					playerAngle = GetTubeSegmentCentreAngle(&tube, currentSegment, p); 
-					pObject->position.x = p.x; 
-					pObject->position.y = p.y; 
+					float segmentAngle = GetTubeSegmentCentreAngle(&tube, currentSegment, p);
+					E3D::Vector v(p.x - pObject->position.x, p.y - pObject->position.y, 0.0f);
+					if (v.GetLength() > 0.75f)
+						v.SetLength(0.75f);
+					pObject->position += v;
+					// Interpolate player rotation towards "current" (target) segment
+					playerAngle = pObject->rotation.z + ((segmentAngle - pObject->rotation.z) * 0.2f);
 					pObject->SetRotation(0.0f, 0.0f, playerAngle);
 					}
 

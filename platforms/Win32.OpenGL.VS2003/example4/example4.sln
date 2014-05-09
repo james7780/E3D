@@ -1,30 +1,26 @@
-Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32OpenGL", "..\Win32OpenGL.vcproj", "{34DE67B0-87BF-405C-9081-220047465FE1}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32OpenGL", "..\Win32OpenGL.vcproj", "{888E9FAF-C232-478E-B5AE-7CDB275CE4EE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example4", "example4.vcproj", "{10F1E3BC-D888-447D-A329-D2E4BBC4CE56}"
 	ProjectSection(ProjectDependencies) = postProject
-		{34DE67B0-87BF-405C-9081-220047465FE1} = {34DE67B0-87BF-405C-9081-220047465FE1}
+		{888E9FAF-C232-478E-B5AE-7CDB275CE4EE} = {888E9FAF-C232-478E-B5AE-7CDB275CE4EE}
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(SolutionConfiguration) = preSolution
-		Debug = Debug
-		Release = Release
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectConfiguration) = postSolution
-		{34DE67B0-87BF-405C-9081-220047465FE1}.Debug.ActiveCfg = Debug|Win32
-		{34DE67B0-87BF-405C-9081-220047465FE1}.Debug.Build.0 = Debug|Win32
-		{34DE67B0-87BF-405C-9081-220047465FE1}.Release.ActiveCfg = Release|Win32
-		{34DE67B0-87BF-405C-9081-220047465FE1}.Release.Build.0 = Release|Win32
-		{10F1E3BC-D888-447D-A329-D2E4BBC4CE56}.Debug.ActiveCfg = Debug|Win32
-		{10F1E3BC-D888-447D-A329-D2E4BBC4CE56}.Debug.Build.0 = Debug|Win32
-		{10F1E3BC-D888-447D-A329-D2E4BBC4CE56}.Release.ActiveCfg = Release|Win32
-		{10F1E3BC-D888-447D-A329-D2E4BBC4CE56}.Release.Build.0 = Release|Win32
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{888E9FAF-C232-478E-B5AE-7CDB275CE4EE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{888E9FAF-C232-478E-B5AE-7CDB275CE4EE}.Release|Win32.ActiveCfg = Release|Win32
+		{10F1E3BC-D888-447D-A329-D2E4BBC4CE56}.Debug|Win32.ActiveCfg = Debug|Win32
+		{10F1E3BC-D888-447D-A329-D2E4BBC4CE56}.Debug|Win32.Build.0 = Debug|Win32
+		{10F1E3BC-D888-447D-A329-D2E4BBC4CE56}.Release|Win32.ActiveCfg = Release|Win32
+		{10F1E3BC-D888-447D-A329-D2E4BBC4CE56}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

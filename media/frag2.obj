@@ -1,0 +1,20 @@
+# Lines-only fragment object
+mtllib frag.mtl
+o tetrahedron1
+#4 vertices, 4 faces
+v 0.0000000e+0 0.93600106 -2.6600000e-7
+v 0.0000000e+0 -0.31199582 0.88246896
+v -0.76424119 -0.31199862 -0.44123535
+v 0.76424119 -0.31199862 -0.44123535
+g tetrahedron1_blue
+usemtl blue
+l 1 2
+l 2 3
+g tetrahedron1_green
+usemtl green
+l 3 1
+l 3 4
+g tetrahedron1_red
+usemtl red
+l 4 2
+l 4 1
