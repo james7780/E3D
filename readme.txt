@@ -1,7 +1,7 @@
 E3D Cross Platform 3D Library
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Copyright James Higgs 2006/2007
+Copyright James Higgs 2006-2014
 
 Please refer to the documents in the docs directory for more information on:
 
