@@ -1,0 +1,33 @@
+# Handmade by JH 2006
+mtllib barrier.mtl
+o barrier
+# 12 verts, 12 lines
+# bottom slat
+v -3 -2.5 0
+v 3 -2.5 0
+v 3 -1.5 0
+v -3 -1.5 0
+# middle slat
+v -3 -0.5 0
+v 3 -0.5 0
+v 3 0.5 0
+v -3 0.5 0
+# top slat
+v -3 1.5 0
+v 3 1.5 0
+v 3 2.5 0
+v -3 2.5 0
+g barrier_default
+usemtl grey
+l 1 2
+l 2 3
+l 3 4
+l 4 1
+l 5 6
+l 6 7
+l 7 8
+l 8 5
+l 9 10
+l 10 11
+l 11 12
+l 12 9
