@@ -508,11 +508,11 @@ int E3D_Scene::Load(char *filename)
 			//fprintf(plog, "Texture bitmap detected - ");
 			fscanf(pfscene, "%s", &stemp[0]);
 			fprintf(plog, "%s\n",	stemp);
-			ext = strupr(strrchr(stemp, '.'));
+			ext = strrchr(stemp, '.');
 			fprintf(plog, "texture file ext is %s\n", ext);
 			fprintf(plog, "*** Warning: textures not supported yet! ***\n");
 			// check if right filetype (bmp or pcx)
-			if((strcmp(ext, ".BMP") == 0) || (strcmp(ext, ".PCX") == 0)) {
+			if((0 == stricmp(ext, ".BMP")) || (0 == stricmp(ext, ".PCX"))) {
 				//scene->ptex[scene->numtex] = load_bitmap(stemp, paltemp);
 //blit(scene->ptex[0], screen, 0, 0, 0, 0, 256, 256);		// copy upper left
 				//if(scene->ptex[scene->numtex] == NULL) {

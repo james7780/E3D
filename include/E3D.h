@@ -19,6 +19,10 @@
 #define FALSE	0
 #endif
 
+#ifdef _LINUX
+#define stricmp	strcasecmp
+#endif
+
 //#include <list>
 #include <vector>
 

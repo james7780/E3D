@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "../../../include/E3D.h"
 using namespace E3D;

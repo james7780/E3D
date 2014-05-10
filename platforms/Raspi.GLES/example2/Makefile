@@ -9,17 +9,22 @@ CXX = g++
 #SDL_CFLAGS := $(shell sdl-config --cflags)
 #SDL_LDFLAGS := $(shell sdl-config --libs)
 
-CFLAGS := $(shell sdl-config --cflags)
+CFLAGS := $(shell sdl-config --cflags) -D_RASPI
 CXXFLAGS := $(CFLAGS) $(CXXFLAGS) -fno-exceptions -fno-rtti
 LDFLAGS := $(shell sdl-config --libs)
 LDFLAGS += -lGL -lGLU -lm -lstdc++ 
 
+TARGET = loadscene
+OBJS = loadscene.o
 
+all: $(TARGET)
 
-all: loadscene
+$(TARGET) : $(OBJS)
+	$(CXX) $(LDFLAGS) $(OBJS) ../libe3d.a -o $@
 
-loadscene : loadscene.o
-	$(CXX) $(LDFLAGS) loadscene.o ../libe3d.a -o loadscene
+clean:
+	rm -f $(TARGET)
+	rm -f $(OBJS)
 
 
 

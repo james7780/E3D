@@ -66,7 +66,7 @@ class E3D_Object gpObject[OBJ_MAX];
 
 E3D_Utility util;
 
-int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
+int InitGL()										// All Setup For OpenGL Goes Here
 {
 	printf("InitGL()\n");
 
@@ -96,7 +96,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 }
 
 
-int DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
+int DrawGLScene()									// Here's Where We Do All The Drawing
 {
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();									// Reset The Modelview Matrix

@@ -54,7 +54,7 @@ class E3D_Object gpObject[OBJ_MAX];
 E3D_Utility util;
 
 
-int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
+int InitGL()										// All Setup For OpenGL Goes Here
 {
 	printf("InitGL()\n");
 
@@ -83,7 +83,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	return TRUE;										// Initialization Went OK
 }
 
-int DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
+int DrawGLScene()									// Here's Where We Do All The Drawing
 {
 	//int i;
 	float scale = 10.0f;
@@ -124,6 +124,9 @@ int main(void) {
     char    titlestr[ 200 ];
 	int		scr_mode;
 
+	printf("Initialising the scene...\n");
+ 
+ 
 	// Initialise or scene
 	Scene.Start();
 	// Load our scene file

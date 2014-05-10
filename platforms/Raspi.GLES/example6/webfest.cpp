@@ -301,7 +301,7 @@ void ShutdownSound()
 }
 
 // Setup OpenGL global parameters
-int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
+int InitGL()										// All Setup For OpenGL Goes Here
 {
 	printf("InitGL()\n");
 
@@ -1286,7 +1286,7 @@ int main(void) {
     flip();
 
 	// Set up the E3D scene
-	E3D_debug = 1;			// turn on E3D debug output
+	//E3D_debug = 1;			// turn on E3D debug output
 	Scene.Start();
 	Scene.SetRenderDistance(1000.0f);
 
@@ -1499,7 +1499,7 @@ int main(void) {
 				{
 					//fps = (double)frames / (t-t0);
 					sprintf( titlestr, 
-						"E3D Linux/SDL/GL Example6 - Webfest (%d FPS) %d objects", 
+						"E3D RasPI GLES Example6 - Webfest (%d FPS) %d objects", 
 						frames, Scene.GetNumObjects());
 				    SDL_WM_SetCaption(titlestr, "");
 					ticks0 = ticks;

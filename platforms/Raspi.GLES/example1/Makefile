@@ -9,7 +9,7 @@ CXX = g++
 #SDL_CFLAGS := $(shell sdl-config --cflags)
 #SDL_LDFLAGS := $(shell sdl-config --libs)
 
-CFLAGS := $(shell sdl-config --cflags)
+CFLAGS := $(shell sdl-config --cflags) -D_RASPI
 CXXFLAGS := $(CFLAGS) $(CXXFLAGS) -fno-exceptions -fno-rtti
 LDFLAGS := $(shell sdl-config --libs)
 LDFLAGS += -lGL -lGLU -lm -lstdc++ 

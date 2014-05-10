@@ -22,7 +22,7 @@ GLfloat zoom = 20;
 
 class E3D_Scene Scene;
 
-int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
+int InitGL()										// All Setup For OpenGL Goes Here
 {
 	printf("InitGL()\n");
 
@@ -48,7 +48,7 @@ int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
 	return TRUE;										// Initialization Went OK
 }
 
-int DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
+int DrawGLScene()									// Here's Where We Do All The Drawing
 {
 	Scene.Render((float)VIEW_WIDTH, (float)VIEW_HEIGHT, true);
 

@@ -9,17 +9,22 @@ CXX = g++
 #SDL_CFLAGS := $(shell sdl-config --cflags)
 #SDL_LDFLAGS := $(shell sdl-config --libs)
 
-CFLAGS := $(shell sdl-config --cflags)
+CFLAGS := $(shell sdl-config --cflags) -D_RASPI
 CXXFLAGS := $(CFLAGS) $(CXXFLAGS) -fno-exceptions -fno-rtti
 LDFLAGS := $(shell sdl-config --libs)
 LDFLAGS += -lmikmod -lGL -lGLU -lm -lstdc++ 
 
+TARGET = webfest
+OBJS = webfest.o behaviours.o loadweb.o hiscore.o
 
+all: $(TARGET)
 
-all: webfest
+$(TARGET) : $(OBJS)
+	$(CXX) $(LDFLAGS) $(OBJS) ../libe3d.a -o $@
 
-webfest : webfest.o behaviours.o loadweb.o hiscore.o ../libe3d.a
-	$(CXX) $(LDFLAGS) webfest.o behaviours.o loadweb.o hiscore.o ../libe3d.a -o webfest
+clean:
+	rm -f $(TARGET)
+	rm -f $(OBJS)
 
 
 
