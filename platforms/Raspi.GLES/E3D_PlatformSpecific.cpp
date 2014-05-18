@@ -10,10 +10,10 @@
 // TODO : Convert to "native" Rapsberry Pi GLES  (see /opt/vc/ etc for examples)
 // TODO : Use SDL or PIGU?
 
-#include "SDL.h"   /* All SDL App's need this */
 #include <stdio.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
+//#include <GL/gl.h>
+//#include <GL/glu.h>
+#include "GLES/gl.h"
 
 #include "../../include/E3D.h"
 
@@ -61,7 +61,7 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 	glLightfv(GL_LIGHT1, GL_POSITION,LightDirection);	// set light position or direction
 	glEnable(GL_LIGHT1);								// Enable Light One
 	glEnable(GL_LIGHTING);								// Enable Lighting
-
+/* WAS:	
 	// 2. Set up camera (eye)
 	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
 	glLoadIdentity();									// Reset The Projection Matrix
@@ -83,16 +83,35 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 	target.y = eye.y + dirn.y;
 	target.z = eye.z + dirn.z;
 	gluLookAt(eye.x, eye.y, eye.z, target.x, target.y, target.z, up.x, up.y, up.z); 
+*/
+	glViewport(0, 0, viewWidth, viewHeight);
+	  
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	float nearDist = 1.0f;
+	float farDist = 500.0f;
+
+	float hht = nearDist * (float)tan(45.0 / 2.0 / 180.0 * M_PI);
+	float hwd = hht * viewWidth / viewHeight;
+
+	glFrustumf(-hwd, hwd, -hht, hht, nearDist, farDist);
+
+	// Set up vertex array output
+	glEnableClientState(GL_VERTEX_ARRAY);
+	//glVertexPointer(3, GL_BYTE, 0, quadx);
 
 	// 3. Clear pixel and depth buffer if required
 	if(clear) {
 		Colour bgCol = scene->GetBackColour();
-		glClearColor(bgCol.r, bgCol.g, bgCol.b, 0.5f);				// Background colour
-		glClearDepth(1.0f);									// Depth Buffer Setup
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+		glClearColor(bgCol.r, bgCol.g, bgCol.b, 1.0f);				// Background colour
+		//glClearDepth(1.0f);									// Depth Buffer Setup
+		glClear(GL_COLOR_BUFFER_BIT); // | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
 	}
 
 	glMatrixMode(GL_MODELVIEW);					// Make sure we're using the Modelview Matrix
+	glLoadIdentity();
+	glTranslatef(0.f, 0.f, -50.f);
 
 	// TODO: use iterator!
 	for(int i = 0; i < NUM_OBJLISTS; i++)
@@ -152,6 +171,8 @@ void E3D_PlatformSpecific::DrawModel(E3D_Model *pModel)
 // TEST!
 	glDisable(GL_LIGHTING);								// Enable Lighting
 // END TEST
+
+/* TODO : Convert to GLES
 	for(int i=0; i < pModel->m_numPolys; i++) {
 		// calculate polygon colour
 		glColor3f(pModel->m_poly[i].colour.r, pModel->m_poly[i].colour.g, pModel->m_poly[i].colour.b);
@@ -198,10 +219,16 @@ void E3D_PlatformSpecific::DrawModel(E3D_Model *pModel)
 				break;
 		} // end switch
 	}
+*/
+
+	if (E3D_debug)
+		printf("%d lines\n", pModel->m_numLines);
 
 	// draw lines
 	if(pModel->m_numLines > 0) {
 		glDisable(GL_LIGHTING);								// Enable Lighting
+		glDisable(GL_TEXTURE_2D);
+/* TODO : Convert to GLES
 		glBegin(GL_LINES);
 		for(int i=0; i < pModel->m_numLines; i++) {
 			// calculate line colour
@@ -218,6 +245,36 @@ void E3D_PlatformSpecific::DrawModel(E3D_Model *pModel)
 			glVertex3f(vert2->x, vert2->y, vert2->z);
 		}
 		glEnd();
+*/
+		GLfloat v[2000];
+		int offset = 0;
+		for(int i=0; i < pModel->m_numLines; i++) {
+			// calculate line colour
+			Line* line = &pModel->m_line[i];
+			// TODO : Line colour
+			//glColor3f(line->colour.r,line->colour.g, line->colour.b);
+			glColor4f(line->colour.r,line->colour.g, line->colour.b, 1.0f);
+			
+			// add line start and end vertices
+			Vertex* vert1 = &pModel->m_vert[line->vert1];
+			Vertex* vert2 = &pModel->m_vert[line->vert2];
+			//glVertex3f(vert1->x, vert1->y, vert1->z);
+			//glVertex3f(vert2->x, vert2->y, vert2->z);
+			v[offset++] = vert1->x;
+			v[offset++] = vert1->y;
+			v[offset++] = vert1->z;
+			v[offset++] = vert2->x;
+			v[offset++] = vert2->y;
+			v[offset++] = vert2->z;
+		}
+
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		
+		glVertexPointer(3, GL_FLOAT, 0, v);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glDrawArrays(GL_LINES, 0, pModel->m_numLines * 2);
+
+		
 		glEnable(GL_LIGHTING);								// Enable Lighting
 	}
 
