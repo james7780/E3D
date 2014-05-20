@@ -84,6 +84,7 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 	target.z = eye.z + dirn.z;
 	gluLookAt(eye.x, eye.y, eye.z, target.x, target.y, target.z, up.x, up.y, up.z); 
 */
+	// TODO : Reimplement "llokat" functionlaity 
 	glViewport(0, 0, viewWidth, viewHeight);
 	  
 	glMatrixMode(GL_PROJECTION);
@@ -97,9 +98,20 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 
 	glFrustumf(-hwd, hwd, -hht, hht, nearDist, farDist);
 
-	// Set up vertex array output
-	glEnableClientState(GL_VERTEX_ARRAY);
-	//glVertexPointer(3, GL_BYTE, 0, quadx);
+	// for now, we only use the first camera in the scene
+	E3D_Camera *camera = scene->GetCamera(0);
+	if(camera == NULL)
+		return;							// no camera, no dice!
+
+	Vector target, eye, dirn, up;
+	eye = camera->GetPosition();
+	dirn = camera->GetDirection();
+	up = camera->GetUpVector();
+	// transforms in reverse order
+	glRotatef(dirn.x, 0.0, 1.0, 0.0);
+	glTranslatef(-eye.x, -eye.y, -eye.z);
+
+
 
 	// 3. Clear pixel and depth buffer if required
 	if(clear) {
@@ -111,21 +123,14 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 
 	glMatrixMode(GL_MODELVIEW);					// Make sure we're using the Modelview Matrix
 	glLoadIdentity();
-	glTranslatef(0.f, 0.f, -50.f);
 
 	// TODO: use iterator!
 	for(int i = 0; i < NUM_OBJLISTS; i++)
 	{
 	OBJLIST* objList = scene->GetObjectList(i);
-
-	//for(int i=0; i<scene->GetNumObjects(); i++) {
-	//	pO = scene->GetObject(0, i);
-	//for (int i = 0; i < objList.size(); i++)
 	OBJLIST::const_iterator objIter;
 	for(objIter = objList->begin() ; objIter != objList->end(); objIter++)
 		{
-		//pO = &objList.at(i);
-
 		// TODO: add scene->GetCamera()->GetPosition() for getting eye pos
 		// TODO: calc distance to this object
 		float dist = 0; //util.vector_length_f(pO->x - x_eye, pO->y - y_eye, pO->z - z_eye);
@@ -151,9 +156,7 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 			glRotatef(RAD2DEG(objIter->rotation.x), 1.0f, 0.0f, 0.0f);			// pitch
 			glScalef(objIter->scale.x, objIter->scale.y, objIter->scale.z);
 
-			//glCallList(displist[pO->modelNumber]);			// Draw the object
 			DrawModel(objIter->model);
-
 		}	// end if dist < whatever
 	}	// next object / instance
 
@@ -165,14 +168,11 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 /// It should just draw the specific model
 void E3D_PlatformSpecific::DrawModel(E3D_Model *pModel)
 {
-	int vi[4];
-
-	// draw polygons
 // TEST!
 	glDisable(GL_LIGHTING);								// Enable Lighting
 // END TEST
 
-/* TODO : Convert to GLES
+/* OLD "non-GLES" version
 	for(int i=0; i < pModel->m_numPolys; i++) {
 		// calculate polygon colour
 		glColor3f(pModel->m_poly[i].colour.r, pModel->m_poly[i].colour.g, pModel->m_poly[i].colour.b);
@@ -221,14 +221,93 @@ void E3D_PlatformSpecific::DrawModel(E3D_Model *pModel)
 	}
 */
 
+	// New (2014) version using vertex arrays
+	GLfloat vertices[2000];						// TODO : make static, or store in the model
+	GLfloat normals[2000];
+	GLfloat colours[2000];
+	GLfloat *pv = vertices;
+	GLfloat *pn = normals;
+	GLfloat *pc = colours;
+
+	// Draw faces
+	if(pModel->m_numPolys > 0)
+		{
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_NORMAL_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
+
+		for(int i=0; i < pModel->m_numPolys; i++)
+			{
+			Face *face = &pModel->m_poly[i];
+			// calculate polygon colour
+			//glColor3f(pModel->m_poly[i].colour.r, pModel->m_poly[i].colour.g, pModel->m_poly[i].colour.b);
+			*pc++ = face->colour.r;						// face vert 1
+			*pc++ = face->colour.g;
+			*pc++ = face->colour.b;
+			*pc++ = 1.0f;
+			*pc++ = face->colour.r;						// face vert 2
+			*pc++ = face->colour.g;
+			*pc++ = face->colour.b;
+			*pc++ = 1.0f;
+			*pc++ = face->colour.r;						// face vert 3
+			*pc++ = face->colour.g;
+			*pc++ = face->colour.b;
+			*pc++ = 1.0f;
+
+			// Assume all faces are triangles
+
+					//glBegin(GL_TRIANGLES);
+					//	// normal
+					//	glNormal3f(pModel->m_norm[i].x, pModel->m_norm[i].y, pModel->m_norm[i].z);
+					//	// vertices
+					//	glVertex3f(pModel->m_vert[vi[0]].x, pModel->m_vert[vi[0]].y, pModel->m_vert[vi[0]].z);
+					//	glVertex3f(pModel->m_vert[vi[1]].x, pModel->m_vert[vi[1]].y, pModel->m_vert[vi[1]].z);
+					//	glVertex3f(pModel->m_vert[vi[2]].x, pModel->m_vert[vi[2]].y, pModel->m_vert[vi[2]].z);
+					//glEnd();
+
+			// add face normals
+			Vector* normal = &pModel->m_norm[i];
+			*pn++ = normal->x;						// normal at vert 1
+			*pn++ = normal->y;
+			*pn++ = normal->z;
+			*pn++ = normal->x;						// normal at vert 2
+			*pn++ = normal->y;
+			*pn++ = normal->z;
+			*pn++ = normal->x;						// normal at vert 3
+			*pn++ = normal->y;
+			*pn++ = normal->z;
+
+			// add face vertices
+			Vertex* vert1 = &pModel->m_vert[face->p[0]];
+			Vertex* vert2 = &pModel->m_vert[face->p[2]];
+			Vertex* vert3 = &pModel->m_vert[face->p[1]];
+			*pv++ = vert1->x;						// vert 1
+			*pv++ = vert1->y;
+			*pv++ = vert1->z;
+			*pv++ = vert2->x;						// vert 2
+			*pv++ = vert2->y;
+			*pv++ = vert2->z;
+			*pv++ = vert3->x;						// vert 3
+			*pv++ = vert3->y;
+			*pv++ = vert3->z;
+			}
+
+		glVertexPointer(3, GL_FLOAT, 0, vertices);
+		glNormalPointer(GL_FLOAT, 0, normals);
+		glColorPointer(4, GL_FLOAT, 0, colours);
+		glDrawArrays(GL_TRIANGLES, 0, pModel->m_numPolys * 3);
+		}
+
+
 	if (E3D_debug)
 		printf("%d lines\n", pModel->m_numLines);
 
 	// draw lines
-	if(pModel->m_numLines > 0) {
+	if(pModel->m_numLines > 0)
+		{
 		glDisable(GL_LIGHTING);								// Enable Lighting
 		glDisable(GL_TEXTURE_2D);
-/* TODO : Convert to GLES
+/* OLD "non-GLES" version
 		glBegin(GL_LINES);
 		for(int i=0; i < pModel->m_numLines; i++) {
 			// calculate line colour
@@ -246,32 +325,40 @@ void E3D_PlatformSpecific::DrawModel(E3D_Model *pModel)
 		}
 		glEnd();
 */
-		GLfloat v[2000];
-		int offset = 0;
-		for(int i=0; i < pModel->m_numLines; i++) {
-			// calculate line colour
+		// New (2014) version that uses vertex arrays (works in GL and GLES)
+		pv = vertices;
+		pc = colours;
+
+		for(int i=0; i < pModel->m_numLines; i++)
+			{
+			// Add line colour
 			Line* line = &pModel->m_line[i];
-			// TODO : Line colour
-			//glColor3f(line->colour.r,line->colour.g, line->colour.b);
-			glColor4f(line->colour.r,line->colour.g, line->colour.b, 1.0f);
+			//glColor4f(line->colour.r,line->colour.g, line->colour.b, 1.0f);
+			*pc++ = line->colour.r;						// line start vert
+			*pc++ = line->colour.g;
+			*pc++ = line->colour.b;
+			*pc++ = 1.0f;
+			*pc++ = line->colour.r;						// line end vert
+			*pc++ = line->colour.g;
+			*pc++ = line->colour.b;
+			*pc++ = 1.0f;
 			
 			// add line start and end vertices
 			Vertex* vert1 = &pModel->m_vert[line->vert1];
 			Vertex* vert2 = &pModel->m_vert[line->vert2];
-			//glVertex3f(vert1->x, vert1->y, vert1->z);
-			//glVertex3f(vert2->x, vert2->y, vert2->z);
-			v[offset++] = vert1->x;
-			v[offset++] = vert1->y;
-			v[offset++] = vert1->z;
-			v[offset++] = vert2->x;
-			v[offset++] = vert2->y;
-			v[offset++] = vert2->z;
-		}
+			*pv++ = vert1->x;
+			*pv++ = vert1->y;
+			*pv++ = vert1->z;
+			*pv++ = vert2->x;
+			*pv++ = vert2->y;
+			*pv++ = vert2->z;
+			}
 
-		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		
-		glVertexPointer(3, GL_FLOAT, 0, v);
+		glVertexPointer(3, GL_FLOAT, 0, vertices);
+		glColorPointer(4, GL_FLOAT, 0, colours);
 		glEnableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_NORMAL_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
 		glDrawArrays(GL_LINES, 0, pModel->m_numLines * 2);
 
 		
