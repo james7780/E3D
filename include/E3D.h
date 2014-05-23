@@ -79,19 +79,35 @@ public:
 	Vector(float x0, float y0, float z0) { x = x0; y = y0; z = z0; };
 
 	void Set(float x0, float y0, float z0) { x = x0; y = y0; z = z0; };
-	float GetLength(void) { return (float)sqrt(x*x + y*y + z*z); };
-	void Normalise(void) {
-		float scale = 1.0f / GetLength();
-		x *= scale;
-		y *= scale;
-		z *= scale;
-	}
-	void SetLength(float d) {
+
+	float GetLength(void)
+		{
+		return (float)sqrt(x*x + y*y + z*z);
+		};
+
+	void SetLength(float d)
+		{
 		float ratio = d / GetLength();
 		x *= ratio;
 		y *= ratio;
 		z *= ratio;
-	};
+		};
+
+	void Normalise(void)
+		{
+		SetLength(1.0f);
+		};
+
+	Vector CrossProduct(const Vector &v2)
+		{
+		Vector vout((y * v2.z) - (z * v2.y), (z * v2.x) - (x * v2.z), (x * v2.y) - (y * v2.x));
+		return vout;
+		}
+
+	float DotProduct(const Vector &v2)
+		{
+		return ((x * v2.x) + (y * v2.y) + (z * v2.z));
+		}
 
 	Vector operator-() const { return Vector(-x, -y, -z);   }
 

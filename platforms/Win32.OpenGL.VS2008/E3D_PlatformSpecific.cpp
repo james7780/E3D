@@ -99,14 +99,12 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 	if(camera == NULL)
 		return;							// no camera, no dice!
 
-	Vector target, eye, dirn, up;
-	eye = camera->GetPosition();
-	dirn = camera->GetDirection();
-	up = camera->GetUpVector();
-	// transforms in reverse order
-	glRotatef(dirn.x, 0.0, 1.0, 0.0);
-	glTranslatef(-eye.x, -eye.y, -eye.z);
+	// Get camera matrix
+	GLfloat cameraMx[16];
+	camera->GetLookAtMx(cameraMx);
 
+	// Upload camera matrix to projection matrix
+  glMultMatrixf(cameraMx);
 
 
 	// 3. Clear pixel and depth buffer if required

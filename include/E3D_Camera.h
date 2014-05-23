@@ -12,15 +12,15 @@ public:
 	E3D_Camera();
 	virtual ~E3D_Camera();
 
-	void SetCamera(Vector posn, Vector dirn, Vector up, float fov);
+	void SetCamera(const Vector &posn, const Vector &dirn, const Vector &up, float fov);
 	void SetPosition(float x1, float y1, float z1);
-	void SetPosition(Vector p);
+	void SetPosition(const Vector &p);
 	Vector GetPosition(void);
 	void SetDirection(float x1, float y1, float z1);
-	void SetDirection(Vector dir);
+	void SetDirection(const Vector &dir);
 	Vector GetDirection(void);
 	void SetUpVector(float x1, float y1, float z1);
-	void SetUpVector(Vector up);
+	void SetUpVector(const Vector &up);
 	Vector GetUpVector(void);
 	//void SetViewWidth(float width);
 	//void SetViewHeight(float height);
@@ -33,7 +33,10 @@ public:
 	float GetRoll(void);
 
 	void LookAt(float x1, float y1, float z1);
-	void LookAt(Vector target);
+	void LookAt(const Vector &target);
+
+	/// Get "look at" camera matrix
+	void GetLookAtMx(float *mx);
 
 private:
 	Vector m_pos;					// position
