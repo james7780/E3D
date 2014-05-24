@@ -27,27 +27,18 @@ GLfloat zoom = 20;
 
 class E3D_Scene Scene;
 
+// Display state stuff
 typedef struct
 {
-   uint32_t screenWidth;
-   uint32_t screenHeight;
-// OpenGL|ES objects
-   EGLDisplay display;
-   EGLSurface surface;
-   EGLContext context;
-   GLuint tex;
-// model rotation vector and direction
-//   GLfloat rot_angle_x_inc;
-//   GLfloat rot_angle_y_inc;
-//   GLfloat rot_angle_z_inc;
-// current model rotation angles
-//   GLfloat rot_angle_x;
-//   GLfloat rot_angle_y;
-//   GLfloat rot_angle_z;
-// current distance from camera
-   GLfloat distance;
-   GLfloat distance_inc;
-//   MODEL_T model;
+	uint32_t screenWidth;
+	uint32_t screenHeight;
+	// OpenGL|ES objects
+	EGLDisplay display;
+	EGLSurface surface;
+	EGLContext context;
+	GLuint tex;
+	// current distance from camera
+	GLfloat distance;
 } GLES_STATE_T;
 
 static GLES_STATE_T glesState;
@@ -163,11 +154,6 @@ int InitGL(GLES_STATE_T *state)
    result = eglMakeCurrent(state->display, state->surface, state->surface, state->context);
    assert(EGL_FALSE != result);
 
-   // Set background color and clear buffers
-   glClearColor(0.15f, 0.25f, 0.35f, 1.0f);
-   //glClearColor(0.5f, 0.3f, 0.1f, 0.5f);
-  // glClearColor(1.0f, 0.3f, 0.1f, 1.0f);
-
    // Enable back face culling.
    glEnable(GL_CULL_FACE);
 
@@ -185,105 +171,9 @@ int InitGL(GLES_STATE_T *state)
 	return TRUE;										// Initialization Went OK
 }
 
-/***********************************************************
- * Name: init_model_proj
- *
- * Arguments:
- *       CUBE_STATE_T *state - holds OGLES model info
- *
- * Description: Sets the OpenGL|ES model to default values
- *
- * Returns: void
- *
- ***********************************************************/
-static void InitProjection(GLES_STATE_T *state)
-{
-	printf("InitProjection()\n");
-	
-   float nearp = 0.1f;
-   float farp = 500.0f;
-   float hht;
-   float hwd;
-
-   glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
-
-   glViewport(0, 0, (GLsizei)state->screenWidth, (GLsizei)state->screenHeight);
-      
-   glMatrixMode(GL_PROJECTION);
-   glLoadIdentity();
-
-   hht = nearp * (float)tan(45.0 / 2.0 / 180.0 * M_PI);
-   hwd = hht * (float)state->screenWidth / (float)state->screenHeight;
-
-   glFrustumf(-hwd, hwd, -hht, hht, nearp, farp);
-   
-   glEnableClientState( GL_VERTEX_ARRAY );
-	//glVertexPointer( 3, GL_BYTE, 0, quadx );
-   
-
-	// TODO
-   //reset_model(state);
-   // reset model position
-   // reset model position
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
-   glTranslatef(0.f, 0.f, -50.f);
-
-	state->distance = 40.0f;
-}
-
-// TEST
-/***********************************************************
- * Name: redraw_scene
- *
- * Arguments:
- *       CUBE_STATE_T *state - holds OGLES model info
- *
- * Description:   Draws the model and calls eglSwapBuffers
- *                to render to screen
- *
- * Returns: void
- *
- ***********************************************************/
+// Draw the current 3D scene to the GLES context
 static void DrawGLScene(GLES_STATE_T *state)
 {
- //  // Start with a clear screen
- //  glClearColor(1.0f, 0.3f, 0.1f, 1.0f);
- //  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-/*
-   // Draw first (front) face:
-   // Bind texture surface to current vertices
-   glBindTexture(GL_TEXTURE_2D, state->tex[0]);
-
-   // Need to rotate textures - do this by rotating each cube face
-   glRotatef(270.f, 0.f, 0.f, 1.f ); // front face normal along z axis
-
-   // draw first 4 vertices
-   glDrawArrays( GL_TRIANGLE_STRIP, 0, 4);
-
-   // same pattern for other 5 faces - rotation chosen to make image orientation 'nice'
-   glBindTexture(GL_TEXTURE_2D, state->tex[1]);
-   glRotatef(90.f, 0.f, 0.f, 1.f ); // back face normal along z axis
-   glDrawArrays( GL_TRIANGLE_STRIP, 4, 4);
-
-   glBindTexture(GL_TEXTURE_2D, state->tex[2]);
-   glRotatef(90.f, 1.f, 0.f, 0.f ); // left face normal along x axis
-   glDrawArrays( GL_TRIANGLE_STRIP, 8, 4);
-
-   glBindTexture(GL_TEXTURE_2D, state->tex[3]);
-   glRotatef(90.f, 1.f, 0.f, 0.f ); // right face normal along x axis
-   glDrawArrays( GL_TRIANGLE_STRIP, 12, 4);
-
-   glBindTexture(GL_TEXTURE_2D, state->tex[4]);
-   glRotatef(270.f, 0.f, 1.f, 0.f ); // top face normal along y axis
-   glDrawArrays( GL_TRIANGLE_STRIP, 16, 4);
-
-   glBindTexture(GL_TEXTURE_2D, state->tex[5]);
-   glRotatef(90.f, 0.f, 1.f, 0.f ); // bottom face normal along y axis
-   glDrawArrays( GL_TRIANGLE_STRIP, 20, 4);
-*/
-
 	// Draw our E3D scene
 	Scene.Render(state->screenWidth, state->screenHeight, true);
 	eglSwapBuffers(state->display, state->surface);
@@ -379,14 +269,9 @@ int main(void) {
 	// Clear application state
 	memset(&glesState, 0, sizeof(glesState) );
 
-     /*
-     * At this point, we should have a properly setup
-     * double-buffered window for use with OpenGL.
-     */
+	// Set up OpenGL ES 
     InitGL(&glesState);
     
-	// Setup the model world projection
-	InitProjection(&glesState);
 /*
 	// Initialize SDL input
     if(-1 == SDL_Init(SDL_INIT_TIMER | SDL_INIT_JOYSTICK))
@@ -468,15 +353,9 @@ getchar();
 		DrawGLScene(&glesState);
 	} // wend
 
-//    printf("Quitting SDL.\n");
-    
     // Shutdown all subsystems 
-//    SDL_Quit();
-    
     printf("Quitting....\n");
-	
 	exit_func();
-
     exit(0);
 }
 

@@ -8,10 +8,14 @@
 // TODO: playfield extents
 // TODO: sights and score overlay
 
-#include "SDL.h"   /* All SDL App's need this */
 #include <stdio.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <assert.h>
+#include "bcm_host.h"
+#include "GLES/gl.h"
+#include "EGL/egl.h"
+#include "EGL/eglext.h"
+#include <SDL/SDL.h>					// For input only
+
 
 // NB: Include our E3D header file
 #include "../../../include/E3D.h"
@@ -61,13 +65,13 @@ float	fwheel[4];
 
 
 
-#define OBJ_MAX 400
+#define OBJ_MAX 100		//400
 
 class E3D_Scene Scene;
-class E3D_Model gpModel[OBJ_MAX];
-class E3D_Object gpObject[OBJ_MAX];
+//class E3D_Model gpModel[OBJ_MAX];
+//class E3D_Object gpObject[OBJ_MAX];
 
-E3D_Utility util;
+//E3D_Utility util;
 
 // object list defines
 enum {
@@ -78,35 +82,165 @@ enum {
 };
 
 
-int InitGL(GLvoid)										// All Setup For OpenGL Goes Here
+// Display state stuff
+typedef struct
+{
+	uint32_t screenWidth;
+	uint32_t screenHeight;
+	// OpenGL|ES objects
+	EGLDisplay display;
+	EGLSurface surface;
+	EGLContext context;
+	GLuint tex;
+	// current distance from camera
+	GLfloat distance;
+} GLES_STATE_T;
+
+static GLES_STATE_T glesState;
+
+/// Setup display and OpenGL ES stuff
+int InitGL(GLES_STATE_T *state)										// All Setup For OpenGL Goes Here
 {
 	printf("InitGL()\n");
 
-	glShadeModel(GL_FLAT);								// FLAT / SMOOTH shading
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Background colour
-	glClearDepth(1.0f);									// Depth Buffer Setup
+  int32_t success = 0;
+   EGLBoolean result;
+   EGLint num_config;
 
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
-	glDepthFunc(GL_LESS);								// The Type Of Depth Testing To Do
-	//glDepthRange(0.5, 200.0);
-	glEnable(GL_COLOR_MATERIAL);						// Enable Material Coloring
-	//glEnable(GL_POLYGON_SMOOTH);
+   static EGL_DISPMANX_WINDOW_T nativewindow;
 
-	//glPolygonMode(GL_FRONT, GL_LINE);
-	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
-	//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-	// lighting
-	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);		// set ambient light level
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);		// set light colour
-	glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);	// set light position or direction
-	glEnable(GL_LIGHT1);								// Enable Light One
-	glEnable(GL_LIGHTING);								// Enable Lighting
-	glEnable(GL_NORMALIZE);								// fix normals after scaling
+   DISPMANX_ELEMENT_HANDLE_T dispman_element;
+   DISPMANX_DISPLAY_HANDLE_T dispman_display;
+   DISPMANX_UPDATE_HANDLE_T dispman_update;
+   VC_RECT_T dst_rect;
+   VC_RECT_T src_rect;
 
+   static const EGLint attribute_list[] =
+   {
+      EGL_RED_SIZE, 8,
+      EGL_GREEN_SIZE, 8,
+      EGL_BLUE_SIZE, 8,
+      EGL_ALPHA_SIZE, 8,
+      //EGL_DEPTH_SIZE, 16,
+      //EGL_SAMPLES, 4,
+      EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+      EGL_NONE
+   };
+   
+   EGLConfig config;
+
+   // get an EGL display connection
+   state->display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+   assert(state->display != EGL_NO_DISPLAY);
+
+   // initialize the EGL display connection
+   result = eglInitialize(state->display, NULL, NULL);
+   assert(EGL_FALSE != result);
+
+   // get an appropriate EGL frame buffer configuration
+   // this uses a BRCM extension that gets the closest match, rather than standard which returns anything that matches
+   //result = eglSaneChooseConfigBRCM(state->display, attribute_list, &config, 1, &num_config);
+   // use standard version
+   result = eglChooseConfig(state->display, attribute_list, &config, 1, &num_config);
+    assert(EGL_FALSE != result);
+
+   // create an EGL rendering context
+   state->context = eglCreateContext(state->display, config, EGL_NO_CONTEXT, NULL);
+   assert(state->context!=EGL_NO_CONTEXT);
+
+   // create an EGL window surface
+   success = graphics_get_display_size(0 /* LCD */, &state->screenWidth, &state->screenHeight);
+   assert( success >= 0 );
+
+   dst_rect.x = 0;
+   dst_rect.y = 0;
+   dst_rect.width = state->screenWidth;
+   dst_rect.height = state->screenHeight;
+/*
+   // JH - testing
+   dst_rect.x = state->screenWidth / 2;
+   dst_rect.y = state->screenHeight / 2;
+   dst_rect.width = state->screenWidth / 2;
+   dst_rect.height = state->screenHeight / 2;
+*/
+   src_rect.x = 0;
+   src_rect.y = 0;
+   src_rect.width = state->screenWidth << 16;
+   src_rect.height = state->screenHeight << 16;        
+
+   dispman_display = vc_dispmanx_display_open( 0 /* LCD */);
+   dispman_update = vc_dispmanx_update_start( 0 );
+
+   DISPMANX_TRANSFORM_T xform = DISPMANX_NO_ROTATE;
+   dispman_element = vc_dispmanx_element_add ( dispman_update, dispman_display,
+      0/*layer*/, &dst_rect, 0/*src*/,
+      &src_rect, DISPMANX_PROTECTION_NONE, 0 /*alpha*/, 0/*clamp*/, xform/*transform*/);
+      
+   nativewindow.element = dispman_element;
+   nativewindow.width = state->screenWidth;
+   nativewindow.height = state->screenHeight;
+   vc_dispmanx_update_submit_sync( dispman_update );
+      
+   state->surface = eglCreateWindowSurface( state->display, config, &nativewindow, NULL );
+   assert(state->surface != EGL_NO_SURFACE);
+
+   // connect the context to the surface
+   result = eglMakeCurrent(state->display, state->surface, state->surface, state->context);
+   assert(EGL_FALSE != result);
+
+   // Enable back face culling.
+   glEnable(GL_CULL_FACE);
+
+   glMatrixMode(GL_MODELVIEW);
+/*
+   glEnable(GL_DEPTH_TEST);
+   glClearDepthf(1.0);
+   glDepthFunc(GL_LEQUAL);
+
+   float noAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
+   glLightfv(GL_LIGHT0, GL_AMBIENT, noAmbient);
+   glEnable(GL_LIGHT0);
+   glEnable(GL_LIGHTING);
+*/
 	return TRUE;										// Initialization Went OK
 }
 
+// Function to be passed to atexit().
+static void exit_func(void)
+{
+	printf("\nexit_func()\n");
+
+/*
+   if (eglImage != 0)
+   {
+      if (!eglDestroyImageKHR(glesState.display, (EGLImageKHR) eglImage))
+         printf("eglDestroyImageKHR failed.");
+   }
+*/
+
+   // clear screen
+   glClear(GL_COLOR_BUFFER_BIT);
+   eglSwapBuffers(glesState.display, glesState.surface);
+
+   // Release OpenGL resources
+   eglMakeCurrent( glesState.display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT );
+   eglDestroySurface( glesState.display, glesState.surface );
+   eglDestroyContext( glesState.display, glesState.context );
+   eglTerminate( glesState.display );
+
+} // exit_func()
+
+int DrawGLScene(GLES_STATE_T *state)									// Here's Where We Do All The Drawing
+{
+	// Tell E3D to render it's scene to the current GL context
+	//Scene.Render(VIEW_WIDTH, VIEW_HEIGHT, true);
+	Scene.Render(state->screenWidth, state->screenHeight, true);
+	eglSwapBuffers(state->display, state->surface);
+
+	return TRUE;						// Jump Back
+}
+
+/*
 // texture font print
 void jprint(char *text, float x, float y) {
 	int c;
@@ -135,16 +269,8 @@ void jprint(char *text, float x, float y) {
 		x += 12;
 		pc++;
 	}
-
 }
-
-int DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
-{
-	// Tell E3D to render it's scene to the current GL context
-	Scene.Render(VIEW_WIDTH, VIEW_HEIGHT, true);
-
-	return TRUE;						// Jump Back
-}
+*/
 
 // add some fragments to the scene
 void addFrags(Vector p, Vector v) {
@@ -177,6 +303,9 @@ void addFrags(Vector p, Vector v) {
 /////////////////////////////////////////////////////////////////////////////////
 int main(void) {
 
+	printf("Running...\n");
+	getchar();
+
 	bool done=FALSE;								// Bool Variable To Exit Loop
 	short i, j;
 	//char stemp[256];
@@ -190,6 +319,8 @@ int main(void) {
 	int		scr_mode;
 	E3D_Object *pObject;
 
+    // Enable debug output
+    E3D_debug = 1;
 
 	// Initialise the scene
 	Scene.Start();
@@ -208,6 +339,9 @@ int main(void) {
 	camera->SetUpVector(0.0f, 1.0f, 0.0f);
 	camera->SetFOV(60.0f);
 
+	printf("Loading models\n");
+	getchar();
+
 	Scene.AddModel("block", "block.obj");
 	Scene.AddModel("ufo", "ufo.obj");
 	Scene.AddModel("tank", "tank.obj");
@@ -215,6 +349,8 @@ int main(void) {
 	Scene.AddModel("laser_green", "laser_green.obj");
 	Scene.AddModel("frag", "frag.obj");
 
+	printf("Adding objects\n");
+getchar();
 	// add sights
 	pObject = Scene.AddObject(PLAYER_LIST, "block");
 	pObject->SetPosition(0.0f, 0.0f, 100.0f);
@@ -251,99 +387,26 @@ int main(void) {
 		pObject->behaviour = 1;
 	}
 
-   // Set up SDL video buffer
-    printf("Initializing SDL.\n");
- 
-    // Information about the current video settings.
-    const SDL_VideoInfo* info = NULL;
-    // Color depth in bits of our window. 
-    int bpp = 0;
-    // Flags we will pass into SDL_SetVideoMode. 
-    int flags = 0;
+ 	bcm_host_init();
+	printf("Note: ensure you have sufficient gpu_mem configured\n");
+	atexit(exit_func);
 
-  
-    // Initialize defaults, Video and Audio 
-    if((SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO)==-1)) { 
-        printf("Could not initialize SDL: %s.\n", SDL_GetError());
-        exit(-1);
-    }
+	// Clear application state
+	memset(&glesState, 0, sizeof(glesState) );
 
-    printf("SDL initialized.\n");
+	// Set up OpenGL ES 
+    InitGL(&glesState);
 
-    // Let's get some video information. 
-    info = SDL_GetVideoInfo( );
+	// Init GL with no window
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		{
+		printf("Unable to init SDL: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+		}
 
-    if( !info ) {
-        // This should probably never happen. 
-        fprintf( stderr, "Video query failed: %s\n",
-             SDL_GetError( ) );
-        exit( 1 );
-    }
-
-
-
-    SDL_Surface *screen;
-
-    // set quit cleanup callback
-    atexit(SDL_Quit);
-
-   /*
-     * Set our width/height to 640/480 (you would
-     * of course let the user decide this in a normal
-     * app). We get the bpp we will request from
-     * the display. On X11, VidMode can't change
-     * resolution, so this is probably being overly
-     * safe. Under Win32, ChangeDisplaySettings
-     * can change the bpp.
-     */
-    bpp = info->vfmt->BitsPerPixel;
-
-    /*
-     * Now, we want to setup our requested
-     * window attributes for our OpenGL window.
-     * We want *at least* 5 bits of red, green
-     * and blue. We also want at least a 16-bit
-     * depth buffer.
-     *
-     * The last thing we do is request a double
-     * buffered window. '1' turns on double
-     * buffering, '0' turns it off.
-     *
-     * Note that we do not use SDL_DOUBLEBUF in
-     * the flags to SDL_SetVideoMode. That does
-     * not affect the GL attribute state, only
-     * the standard 2D blitting setup.
-     */
-    SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 5 );
-    SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 5 );
-    SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 5 );
-    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
-    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
-
-    /*
-     * We want to request that SDL provide us
-     * with an OpenGL window
-     */
-    flags = SDL_OPENGL; // | SDL_FULLSCREEN;
-
-    /*
-     * Set the video mode
-     */
-    if( SDL_SetVideoMode( VIEW_WIDTH, VIEW_HEIGHT, bpp, flags ) == 0 ) {
-        /* 
-         * This could happen for a variety of reasons,
-         * including DISPLAY not being set, the specified
-         * resolution not being available, etc.
-         */
-        fprintf( stderr, "Video mode set failed: %s\n",
-             SDL_GetError( ) );
-        exit( 1 );
-    }
-
-    SDL_WM_SetCaption("E3D Example 5 - Battlezone", "");
-
-	// Set up our OpenGL env and build our display lists
-	printf( "InitGL() returned %d\n", InitGL() );
+	SDL_Surface *sdlSurface = SDL_SetVideoMode(0, 0, 32, SDL_SWSURFACE);
+	
+    //SDL_WM_SetCaption("E3D Example 5 - Battlezone", "");
 
 	float dx = 0.5f;
 	float dy = 0.2f;
@@ -360,7 +423,7 @@ int main(void) {
 		while((SDL_GetTicks() - ticks) < 20) ;
 		ticks = SDL_GetTicks();
 
-        frames ++;
+        frames++;
 
 		// animate
 		/*
@@ -480,11 +543,11 @@ int main(void) {
 
 		// END BEHAVIOURS
 
-		DrawGLScene();
-
+		DrawGLScene(&glesState);
+/*
 	    // Swap the double-buffer
 	    SDL_GL_SwapBuffers( );
-
+*/
         // Poll for the next event
         SDL_Event event;
         SDL_PollEvent( &event );
@@ -540,12 +603,11 @@ int main(void) {
 
 		if(debounce) debounce--;
 		} // wend
-
-    printf("Quiting SDL.\n");
-    
-    // Shutdown all subsystems 
-    SDL_Quit();
-    
+		
+	// Shutdown all subsystems 
+    printf("Quitting....\n");
+	//exit_func();
+	SDL_Quit();
     exit(0);
 }
 
