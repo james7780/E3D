@@ -57,31 +57,10 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);		// set light colour
 	glLightfv(GL_LIGHT1, GL_POSITION,LightDirection);	// set light position or direction
 	glEnable(GL_LIGHT1);								// Enable Light One
-	glEnable(GL_LIGHTING);								// Enable Lighting
-/* WAS:	
-	// 2. Set up camera (eye)
-	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
-	glLoadIdentity();									// Reset The Projection Matrix
-	// for now, we only use the first camera in the scene
-	E3D_Camera *camera = scene->GetCamera(0);
-	if(camera == NULL)
-		return;							// no camera, no dice!
+	//glEnable(GL_LIGHTING);								// Enable Lighting
 
-	// TODO: what effect foes far/near z have?
-	//gluPerspective(45.0f,(GLfloat)VIEW_WIDTH/VIEW_HEIGHT,1.0f,1000.0f);
-	gluPerspective(camera->GetFOV(), viewWidth/viewHeight, 1.0f, scene->GetRenderDistance());
-
-	Vector target, eye, dirn, up;
-	eye = camera->GetPosition();
-	dirn = camera->GetDirection();
-	up = camera->GetUpVector();
-
-	target.x = eye.x + dirn.x;
-	target.y = eye.y + dirn.y;
-	target.z = eye.z + dirn.z;
-	gluLookAt(eye.x, eye.y, eye.z, target.x, target.y, target.z, up.x, up.y, up.z); 
-*/
-	// TODO : Reimplement "llokat" functionlaity 
+	glLineWidth(3.0f);
+	
 	glViewport(0, 0, viewWidth, viewHeight);
 	  
 	glMatrixMode(GL_PROJECTION);
@@ -216,9 +195,9 @@ void E3D_PlatformSpecific::DrawModel(E3D_Model *pModel)
 */
 
 	// New (2014) version using vertex arrays
-	GLfloat vertices[2000];						// TODO : make static, or store in the model
-	GLfloat normals[2000];
-	GLfloat colours[2000];
+	GLfloat vertices[6000];						// TODO : make static, or store in the model
+	GLfloat normals[6000];
+	GLfloat colours[6000];
 	GLfloat *pv = vertices;
 	GLfloat *pn = normals;
 	GLfloat *pc = colours;

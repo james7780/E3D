@@ -43,11 +43,14 @@
 // TODO:
 // 1. Levels are funny after level 16 (complete the webs)
 
-#include "SDL.h"   /* All SDL App's need this */
 #include <stdio.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include "hiscore.h"				// generic high-score module
+#include <assert.h>
+#include "bcm_host.h"
+#include "GLES/gl.h"
+#include "EGL/egl.h"
+#include "EGL/eglext.h"
+#include <SDL/SDL.h>					// For input only
+#include "hiscore.h"					// generic high-score module
 #include <mikmod.h>
 
 // NB: Include our E3D header file
@@ -71,11 +74,11 @@ using namespace E3D;
 
 //#define VIEW_WIDTH		480
 //#define VIEW_HEIGHT		272
-#define VIEW_WIDTH		640
-#define VIEW_HEIGHT		480
+#define VIEW_WIDTH		glesState.screenWidth
+#define VIEW_HEIGHT		glesState.screenHeight
 
-#define GLYPH_WIDTH		12
-#define GLYPH_HEIGHT	12
+#define GLYPH_WIDTH		24
+#define GLYPH_HEIGHT	24
 
 #define STARFIELD_WIDTH	600
 
@@ -98,8 +101,8 @@ GLfloat	yrot;				// Rotates Cube On The Y Axis
 GLfloat zrot = 0.0f;
 GLfloat zoom = 50;
 GLfloat prop_rot;
-GLfloat xpos[50], ypos[50], zpos[50];
-GLfloat x_tree[200], y_tree[200], z_tree[200];
+//GLfloat xpos[50], ypos[50], zpos[50];
+//GLfloat x_tree[200], y_tree[200], z_tree[200];
 GLfloat z_gnd;
 GLfloat y_eye = 50.0f;
 GLfloat z_eye = -80.0f;
@@ -262,6 +265,8 @@ void StartupSound()
 			// if sample pointer is NULL, we do not try to play it
 			}
 		}
+		
+	printf("Samples loaded\n");
 
     // reserve 8 voices for sound effects
     if (MikMod_SetNumVoices(-1, 8))
@@ -301,66 +306,183 @@ void ShutdownSound()
 }
 
 // Setup OpenGL global parameters
-int InitGL()										// All Setup For OpenGL Goes Here
+// Display state stuff
+typedef struct
+{
+	uint32_t screenWidth;
+	uint32_t screenHeight;
+	// OpenGL|ES objects
+	EGLDisplay display;
+	EGLSurface surface;
+	EGLContext context;
+	GLuint tex;
+	// current distance from camera
+	GLfloat distance;
+} GLES_STATE_T;
+
+static GLES_STATE_T glesState;
+
+/// Setup display and OpenGL ES stuff
+int InitGL(GLES_STATE_T *state)										// All Setup For OpenGL Goes Here
 {
 	printf("InitGL()\n");
 
-	// Use GL_SMOOTH if we want gradient lines
-	glShadeModel(GL_SMOOTH);							// FLAT / SMOOTH shading
-	glLineWidth(2.0f);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Background colour
-	glClearDepth(1.0f);									// Depth Buffer Setup
+  int32_t success = 0;
+   EGLBoolean result;
+   EGLint num_config;
 
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
-	glDepthFunc(GL_LESS);								// The Type Of Depth Testing To Do
-	//glDepthRange(0.5, 200.0);
-	glEnable(GL_COLOR_MATERIAL);						// Enable Material Coloring
-	//glEnable(GL_POLYGON_SMOOTH);
+   static EGL_DISPMANX_WINDOW_T nativewindow;
 
-	//glPolygonMode(GL_FRONT, GL_LINE);
-	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
-	//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-	// lighting
-	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);		// set ambient light level
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);		// set light colour
-	glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);	// set light position or direction
-	//glEnable(GL_LIGHT1);								// Enable Light One
-	//glEnable(GL_LIGHTING);								// Enable Lighting
-	//glEnable(GL_NORMALIZE);								// fix normals after scaling
+   DISPMANX_ELEMENT_HANDLE_T dispman_element;
+   DISPMANX_DISPLAY_HANDLE_T dispman_display;
+   DISPMANX_UPDATE_HANDLE_T dispman_update;
+   VC_RECT_T dst_rect;
+   VC_RECT_T src_rect;
 
+   static const EGLint attribute_list[] =
+   {
+      EGL_RED_SIZE, 8,
+      EGL_GREEN_SIZE, 8,
+      EGL_BLUE_SIZE, 8,
+      EGL_ALPHA_SIZE, 8,
+      //EGL_DEPTH_SIZE, 16,
+      //EGL_SAMPLES, 4,
+      EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+      EGL_NONE
+   };
+   
+   EGLConfig config;
+
+   // get an EGL display connection
+   state->display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+   assert(state->display != EGL_NO_DISPLAY);
+
+   // initialize the EGL display connection
+   result = eglInitialize(state->display, NULL, NULL);
+   assert(EGL_FALSE != result);
+
+   // get an appropriate EGL frame buffer configuration
+   // this uses a BRCM extension that gets the closest match, rather than standard which returns anything that matches
+   //result = eglSaneChooseConfigBRCM(state->display, attribute_list, &config, 1, &num_config);
+   // use standard version
+   result = eglChooseConfig(state->display, attribute_list, &config, 1, &num_config);
+    assert(EGL_FALSE != result);
+
+   // create an EGL rendering context
+   state->context = eglCreateContext(state->display, config, EGL_NO_CONTEXT, NULL);
+   assert(state->context!=EGL_NO_CONTEXT);
+
+   // create an EGL window surface
+   success = graphics_get_display_size(0 /* LCD */, &state->screenWidth, &state->screenHeight);
+   assert( success >= 0 );
+
+/*
+   dst_rect.x = 0;
+   dst_rect.y = 0;
+   dst_rect.width = state->screenWidth;
+   dst_rect.height = state->screenHeight;
+*/
+   // JH - testing
+   dst_rect.x = 0;
+   dst_rect.y = 0;
+   dst_rect.width = state->screenWidth / 2;
+   dst_rect.height = state->screenHeight / 2;
+
+   src_rect.x = 0;
+   src_rect.y = 0;
+   src_rect.width = state->screenWidth << 16;
+   src_rect.height = state->screenHeight << 16;        
+
+   dispman_display = vc_dispmanx_display_open( 0 /* LCD */);
+   dispman_update = vc_dispmanx_update_start( 0 );
+
+   DISPMANX_TRANSFORM_T xform = DISPMANX_NO_ROTATE;
+   dispman_element = vc_dispmanx_element_add ( dispman_update, dispman_display,
+      0/*layer*/, &dst_rect, 0/*src*/,
+      &src_rect, DISPMANX_PROTECTION_NONE, 0 /*alpha*/, 0/*clamp*/, xform/*transform*/);
+      
+   nativewindow.element = dispman_element;
+   nativewindow.width = state->screenWidth;
+   nativewindow.height = state->screenHeight;
+   vc_dispmanx_update_submit_sync( dispman_update );
+      
+   state->surface = eglCreateWindowSurface( state->display, config, &nativewindow, NULL );
+   assert(state->surface != EGL_NO_SURFACE);
+
+   // connect the context to the surface
+   result = eglMakeCurrent(state->display, state->surface, state->surface, state->context);
+   assert(EGL_FALSE != result);
+
+   // Enable back face culling.
+   glEnable(GL_CULL_FACE);
+
+   glMatrixMode(GL_MODELVIEW);
+/*
+   glEnable(GL_DEPTH_TEST);
+   glClearDepthf(1.0);
+   glDepthFunc(GL_LEQUAL);
+
+   float noAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
+   glLightfv(GL_LIGHT0, GL_AMBIENT, noAmbient);
+   glEnable(GL_LIGHT0);
+   glEnable(GL_LIGHTING);
+*/
 	return TRUE;										// Initialization Went OK
 }
 
-// Swap video buffers
-void flip(void)
+// Function to be passed to atexit().
+static void exit_func(void)
 {
-	// PLATFORM-DEPENDANT!
-    /*
-     * Swap the buffers. This this tells the driver to
-     * render the next frame from the contents of the
-     * back-buffer, and to set all rendering operations
-     * to occur on what was the front-buffer.
-     *
-     * Double buffering prevents nasty visual tearing
-     * from the application drawing on areas of the
-     * screen that are being updated at the same time.
-     */
-    SDL_GL_SwapBuffers( );
+	printf("\nexit_func()\n");
+
+/*
+   if (eglImage != 0)
+   {
+      if (!eglDestroyImageKHR(glesState.display, (EGLImageKHR) eglImage))
+         printf("eglDestroyImageKHR failed.");
+   }
+*/
+
+   // clear screen
+   glClear(GL_COLOR_BUFFER_BIT);
+   eglSwapBuffers(glesState.display, glesState.surface);
+
+   // Release OpenGL resources
+   eglMakeCurrent( glesState.display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT );
+   eglDestroySurface( glesState.display, glesState.surface );
+   eglDestroyContext( glesState.display, glesState.context );
+   eglTerminate( glesState.display );
+
+} // exit_func()
+
+int DrawGLScene(GLES_STATE_T *state)									// Here's Where We Do All The Drawing
+{
+	// Tell E3D to render it's scene to the current GL context
+	//Scene.Render(VIEW_WIDTH, VIEW_HEIGHT, true);
+	Scene.Render(state->screenWidth, state->screenHeight, true);
+	eglSwapBuffers(state->display, state->surface);
+
+	return TRUE;						// Jump Back
+}
+
+// Used by 2D routines
+void flip ()
+{
+	eglSwapBuffers(glesState.display, glesState.surface);
 }
 
 // Setup the display for drawing 2D (eg: for 2D vector text)
 void Setup2DOverlay(void)
 {
     glViewport( 0, 0, VIEW_WIDTH, VIEW_HEIGHT );
-    glScissor( 0, 0, VIEW_WIDTH, VIEW_HEIGHT );
+    //glScissor( 0, 0, VIEW_WIDTH, VIEW_HEIGHT );
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);
 
 	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
 	glLoadIdentity();									// Reset The Projection Matrix
-	gluOrtho2D(0, VIEW_WIDTH, VIEW_HEIGHT, 0);			// left, right, bottom, top
-
+	//gluOrtho2D(0, VIEW_WIDTH, VIEW_HEIGHT, 0);			// left, right, bottom, top
+	glOrthof(0, VIEW_WIDTH, VIEW_HEIGHT, 0, -1, 1);
 
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();									// Reset The Modelview Matrix
@@ -386,8 +508,8 @@ void DrawVectorGlyph(char c, GLint x, GLint y, float scale)
 	glTranslatef((float)x, (float)y, 0.0f);
 	glScalef(scale, scale, 1.0f);
 
+/* TODO : Convert to GLES (vertex buffers)
 	// output lines to GL
-	VECTORGLYPH *glyph = &vecGlyph[c];
 	int ls, le;
 	glColor3f(g_textColour.r, g_textColour.g, g_textColour.b);
 	glBegin(GL_LINES);
@@ -398,6 +520,44 @@ void DrawVectorGlyph(char c, GLint x, GLint y, float scale)
 			glVertex3f(glyphPoints[le].x, glyphPoints[le].y, 0.0f); 
 		} // next line
 	glEnd();
+*/
+	VECTORGLYPH *glyph = &vecGlyph[c];
+
+	// New (2014) version using vertex arrays
+	GLfloat vertices[100];						// TODO : make static, or store in the model
+	GLfloat colours[100];
+	GLfloat *pv = vertices;
+	GLfloat *pc = colours;
+
+	for(i=0; i < glyph->numlines; i++)
+		{
+		int ls = glyph->ls[i];
+		int le = glyph->le[i];
+		//glVertex3f(glyphPoints[ls].x, glyphPoints[ls].y, 0.0f); 
+		//glVertex3f(glyphPoints[le].x, glyphPoints[le].y, 0.0f);
+		*pv++ = glyphPoints[ls].x;
+		*pv++ = glyphPoints[ls].y;
+		*pv++ = 0.0f;
+		*pv++ = glyphPoints[le].x;
+		*pv++ = glyphPoints[le].y;
+		*pv++ = 0.0f;
+
+		*pc++ = g_textColour.r;						// line start vert
+		*pc++ = g_textColour.g;
+		*pc++ = g_textColour.b;
+		*pc++ = 1.0f;
+		*pc++ = g_textColour.r;						// line end vert
+		*pc++ = g_textColour.g;
+		*pc++ = g_textColour.b;
+		*pc++ = 1.0f;
+		} 
+
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glColorPointer(4, GL_FLOAT, 0, colours);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glDrawArrays(GL_LINES, 0, glyph->numlines * 2);
 
 }
 
@@ -415,28 +575,9 @@ void DrawVectorText(char *string, GLint x, GLint y, float scale, int spacing)
 // Draw a scaled character to the current GL context
 void DrawChargeMeter()
 {
+/* TODO : Confvert to GLES (vertex buffers)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
-/* vertical version
-	// output lines to GL
-	glBegin(GL_LINES);
-		glColor3f(0.8f,0.8f,0.8f);
-		glVertex3f(4.0f, VIEW_HEIGHT-100, 0.0f); 
-		glVertex3f(4.0f, VIEW_HEIGHT, 0.0f); 
-		glVertex3f(16.0f, VIEW_HEIGHT-100, 0.0f); 
-		glVertex3f(16.0f, VIEW_HEIGHT, 0.0f);
-		glVertex3f(4.0f, VIEW_HEIGHT-100, 0.0f); 
-		glVertex3f(16.0f, VIEW_HEIGHT-100, 0.0f); 
-
-		glColor3f(1.0f,1.0f,1.0f);
-		for(unsigned int i=0; i<g_charge; i+=2)
-			{
-			glVertex3f(4.0f, (GLfloat)(VIEW_HEIGHT-i), 0.0f); 
-			glVertex3f(16.0f, (GLfloat)(VIEW_HEIGHT-i), 0.0f); 
-			}
-	glEnd();
-*/
 
 	// output lines to GL
 	glBegin(GL_LINES);
@@ -458,7 +599,7 @@ void DrawChargeMeter()
 			glVertex3f((GLfloat)(4 + i), VIEW_HEIGHT-16, 0.0f); 
 			}
 	glEnd();
-
+*/
 }
 
 
@@ -673,6 +814,7 @@ void DoHiscoreEntry(unsigned int score, unsigned int level)
 		DrawVectorText("PRESS X TO ENTER LETTER.", VIEW_WIDTH/2 - GLYPH_WIDTH*12, 260, GLYPH_WIDTH, 0);
 		DrawVectorText(name, VIEW_WIDTH/2 - GLYPH_WIDTH, 150, GLYPH_WIDTH, 0);
 
+/* TODO : Convert to GLES
 		// draw frame
 		//		DrawEmptyBox(3, 64, 64, SCREEN_WIDTH-64, SCREEN_HEIGHT-64, 200, 200, 200);
 		glColor3f(1.0f,1.0f,1.0f);
@@ -686,7 +828,7 @@ void DoHiscoreEntry(unsigned int score, unsigned int level)
 			glVertex3f(VIEW_WIDTH-64, 64.0f, 0.0f);
 			glVertex3f(VIEW_WIDTH-64,VIEW_HEIGHT-64, 0.0f);
 		glEnd();
-
+*/
 		// flip buffers
 		flip();
 
@@ -1182,119 +1324,19 @@ int main(void) {
 	E3D_Object *pObject;
 	TUBEDATA tube;
 
-   // Set up SDL video buffer
-    printf("Initializing SDL.\n");
- 
-    // Information about the current video settings.
-    const SDL_VideoInfo* info = NULL;
-    // Color depth in bits of our window. 
-    int bpp = 0;
-    // Flags we will pass into SDL_SetVideoMode. 
-    int flags = 0;
-
-  
-    // Initialize defaults, Video and Audio 
-    if((SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO)==-1)) { 
-        printf("Could not initialize SDL: %s.\n", SDL_GetError());
-        exit(-1);
-    }
-
-    printf("SDL initialized.\n");
-
-    // Let's get some video information. 
-    info = SDL_GetVideoInfo( );
-
-    if( !info ) {
-        // This should probably never happen. 
-        fprintf( stderr, "Video query failed: %s\n",
-             SDL_GetError( ) );
-        exit( 1 );
-    }
-
-
-
-    SDL_Surface *screen;
-
-    // set quit cleanup callback
-    atexit(SDL_Quit);
-
-   /*
-     * Set our width/height to 640/480 (you would
-     * of course let the user decide this in a normal
-     * app). We get the bpp we will request from
-     * the display. On X11, VidMode can't change
-     * resolution, so this is probably being overly
-     * safe. Under Win32, ChangeDisplaySettings
-     * can change the bpp.
-     */
-    bpp = info->vfmt->BitsPerPixel;
-
-    /*
-     * Now, we want to setup our requested
-     * window attributes for our OpenGL window.
-     * We want *at least* 5 bits of red, green
-     * and blue. We also want at least a 16-bit
-     * depth buffer.
-     *
-     * The last thing we do is request a double
-     * buffered window. '1' turns on double
-     * buffering, '0' turns it off.
-     *
-     * Note that we do not use SDL_DOUBLEBUF in
-     * the flags to SDL_SetVideoMode. That does
-     * not affect the GL attribute state, only
-     * the standard 2D blitting setup.
-     */
-    SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 5 );
-    SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 5 );
-    SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 5 );
-    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
-    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
-
-    /*
-     * We want to request that SDL provide us
-     * with an OpenGL window, in a fullscreen
-     * video mode.
-     *
-     * EXERCISE:
-     * Make starting windowed an option, and
-     * handle the resize events properly with
-     * glViewport.
-     */
-    flags = SDL_OPENGL; // | SDL_FULLSCREEN;
-
-    /*
-     * Set the video mode
-     */
-    if( SDL_SetVideoMode( VIEW_WIDTH, VIEW_HEIGHT, bpp, flags ) == 0 ) {
-        /* 
-         * This could happen for a variety of reasons,
-         * including DISPLAY not being set, the specified
-         * resolution not being available, etc.
-         */
-        fprintf( stderr, "Video mode set failed: %s\n",
-             SDL_GetError( ) );
-        exit( 1 );
-    }
-
-    SDL_WM_SetCaption("E3D Example 6 - Webfest", "");
-
-	// Set up our OpenGL env and build our display lists
-	printf( "InitGL() returned %d\n", InitGL() );
-
-    // Swap buffers
-    flip();
+    // Enable debug output
+    //E3D_debug = 1;
 
 	// Set up the E3D scene
-	//E3D_debug = 1;			// turn on E3D debug output
 	Scene.Start();
 	Scene.SetRenderDistance(1000.0f);
+	Scene.SetBackColour(0.1f, 0.0f, 0.1f);
 
 	// Set up the scene's default light (light0)
 	E3D_Light *light0 = Scene.GetLight(0);
 	light0->SetColour( 0.8f, 0.8f, 0.6f );
 	light0->SetAmbient( 0.4f, 0.4f, 0.4f );
-	light0->SetDirection( 0.0, 0.0, -1.0); //0.707f, 0.707f, 0.0f );
+	light0->SetDirection(0.707f, 0.707f, 0.0f );
 
 	// Set up the scene's default camera
 	E3D_Camera *camera = Scene.GetCamera(0);
@@ -1342,6 +1384,31 @@ int main(void) {
 	// Setup sound
 	StartupSound();
 
+	// Raspi videocore init
+ 	bcm_host_init();
+	printf("Note: ensure you have sufficient gpu_mem configured\n");
+	atexit(exit_func);
+
+	// Clear application state
+	memset(&glesState, 0, sizeof(glesState) );
+
+	// Set up OpenGL ES environment
+    InitGL(&glesState);
+
+ 	// Init GL with no window
+    printf("Initializing SDL.\n");
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		{
+		printf("Unable to init SDL: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+		}
+
+	SDL_Surface *sdlSurface = SDL_SetVideoMode(0, 0, 32, SDL_SWSURFACE);
+	
+    //SDL_WM_SetCaption("E3D Example 6 - Webfest", "");
+
+    printf("SDL initialized.\n");
+
 	// ********************* OUTER CONTROL LOOP ************************
 	while(true)
 		{
@@ -1349,9 +1416,11 @@ int main(void) {
 		camera->SetPosition(0.0f, 0.5f, 30.0f);
 		camera->SetDirection(0.0f, 0.0f, -1.0f);
 		camera->SetUpVector(0.0f, 1.0f, 0.0f);
+		//camera->SetFOV(60.0f);
 		frames = 0;
 		level = DEBUG_START_LEVEL; 
 		gameOver = true;
+		printf("Running title loop...\n");
 		while(gameOver)
 			{
 			// set up title screen
@@ -1365,14 +1434,16 @@ int main(void) {
 				{
 				// fps limiter
 				// limit fps to 50 frames per second
-				while((SDL_GetTicks() - ticks) < 20) ;
-				ticks = SDL_GetTicks();
+				//while((SDL_GetTicks() - ticks) < 20) ;
+				//ticks = SDL_GetTicks();
 
 				MoveStars(false);
 				DrawTitleScreen(frames++);
 
-				// Flush, vsync, Swap buffers
+				// Swap buffers
 				flip();
+
+//				DrawGLScene(&glesState);
 
 		        // Poll for the next event
 		        SDL_Event event;
@@ -1393,7 +1464,7 @@ int main(void) {
 					{
 					// Close OpenGL window and 
 				    // Shutdown all subsystems 
-				    SDL_Quit();		    
+				    //SDL_Quit();		    
 				    exit(0);
 					}
 				// Sample test
@@ -1501,7 +1572,7 @@ int main(void) {
 					sprintf( titlestr, 
 						"E3D RasPI GLES Example6 - Webfest (%d FPS) %d objects", 
 						frames, Scene.GetNumObjects());
-				    SDL_WM_SetCaption(titlestr, "");
+				    //SDL_WM_SetCaption(titlestr, "");
 					ticks0 = ticks;
 					frames = 0;
 				}
@@ -1514,11 +1585,24 @@ int main(void) {
 				float playerAngle;
 				if(0 == playerDying)
 					{
+/*
 					pObject = Scene.GetObject(PLAYER_LIST, PLAYER1_ID);
 					Vector p;
 					playerAngle = GetTubeSegmentCentreAngle(&tube, currentSegment, p); 
 					pObject->position.x = p.x; 
 					pObject->position.y = p.y; 
+					pObject->SetRotation(0.0f, 0.0f, playerAngle);
+*/					
+					pObject = Scene.GetObject(PLAYER_LIST, PLAYER1_ID);
+					// interpolate player position towards "current" (target) segment
+					Vector p;
+					float segmentAngle = GetTubeSegmentCentreAngle(&tube, currentSegment, p);
+					E3D::Vector v(p.x - pObject->position.x, p.y - pObject->position.y, 0.0f);
+					if (v.GetLength() > 0.75f)
+						v.SetLength(0.75f);
+					pObject->position += v;
+					// Interpolate player rotation towards "current" (target) segment
+					playerAngle = pObject->rotation.z + ((segmentAngle - pObject->rotation.z) * 0.2f);
 					pObject->SetRotation(0.0f, 0.0f, playerAngle);
 					}
 
@@ -1819,7 +1903,7 @@ int main(void) {
 
     // Shutdown all subsystems 
 	ShutdownSound();
-    SDL_Quit();
+    //SDL_Quit();
     exit(0);
 }
 
