@@ -164,6 +164,8 @@ SAMPLE* samples[SAMPLE_MAX];
 // Start up the sound system
 void StartupSound()
 {
+	printf("MikMod version %1d.%1d.%1d\n", LIBMIKMOD_VERSION_MAJOR, LIBMIKMOD_VERSION_MINOR, LIBMIKMOD_REVISION);
+
 	// Setup MikMod to play samples
 	MikMod_RegisterAllDrivers();
 
