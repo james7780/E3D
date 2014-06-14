@@ -273,8 +273,10 @@ void StartupSound()
 		
 	printf("Samples loaded\n");
 
-    // reserve 8 voices for sound effects
-    if (MikMod_SetNumVoices(-1, 8))
+    // reserve 4 voices for sound effects
+    // NB: Only use 4 voices on RPI, otherwise mixing takes too long
+    //     and affects fps!
+    if (MikMod_SetNumVoices(-1, 4))
 		{
 		fprintf(stderr, "MikMod: Could not set number of voices, reason: %s\n",
                 MikMod_strerror(MikMod_errno));
@@ -1414,13 +1416,13 @@ int main(void) {
 	StartupSound();
 
 printf("MikMod active: %d\n", MikMod_Active());
-
+/*
 	MODULE* mod = Player_Load("/home/pi/FLOWERS.IT", 4, FALSE);
 	if (mod)
 		Player_Start(mod);
 	else
 		printf("MOD not loaded!\n");
-
+*/
 	WFPlaySound(0, 0);
 	UpdateSound();
 
@@ -1579,7 +1581,7 @@ printf("MikMod active: %d\n", MikMod_Active());
 */
 				ticks = SDL_GetTicks();
 				UpdateSound();
-				usleep(15000);			// needed for mikmod to process sound
+				usleep(12000);			// needed for mikmod to process sound
 
 		        	// Get mouse position
 				//SDL_PumpEvents();
