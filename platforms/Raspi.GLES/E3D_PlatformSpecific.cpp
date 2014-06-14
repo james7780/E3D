@@ -17,6 +17,8 @@
 // Set our C++ namespace prefix to E3D so we can more easily use E3D objects
 using namespace E3D;
 
+#define FOV	60.0			// *VERTICAL* field of view
+
 E3D_PlatformSpecific::E3D_PlatformSpecific()
 {
 
@@ -69,7 +71,7 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 	float nearDist = 1.0f;
 	float farDist = 500.0f;
 
-	float hht = nearDist * (float)tan(45.0 / 2.0 / 180.0 * M_PI);
+	float hht = nearDist * (float)tan(FOV / 2.0 / 180.0 * M_PI);
 	float hwd = hht * viewWidth / viewHeight;
 
 	glFrustumf(-hwd, hwd, -hht, hht, nearDist, farDist);

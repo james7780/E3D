@@ -44,6 +44,7 @@
 // 1. Levels are funny after level 16 (complete the webs)
 
 #include <stdio.h>
+#include <unistd.h>
 #include <assert.h>
 #include "bcm_host.h"
 #include "GLES/gl.h"
@@ -63,7 +64,7 @@ using namespace E3D;
 
 #define WHITE	Colour(1.0f, 1.0f, 1.0f);
 #define BLUE	Colour(0.0f, 0.0f, 1.0f);
-#define RED		Colour(1.0f, 0.0f, 0.0f);
+#define RED	Colour(1.0f, 0.0f, 0.0f);
 #define GREEN	Colour(0.0f, 1.0f, 0.0f);
 #define YELLOW	Colour(1.0f, 1.0f, 0.0f);
 #define PURPLE	Colour(1.0f, 0.0f, 1.0f);
@@ -77,7 +78,7 @@ using namespace E3D;
 #define VIEW_WIDTH		glesState.screenWidth
 #define VIEW_HEIGHT		glesState.screenHeight
 
-#define GLYPH_WIDTH		24
+#define GLYPH_WIDTH	24
 #define GLYPH_HEIGHT	24
 
 #define STARFIELD_WIDTH	600
@@ -175,10 +176,12 @@ void StartupSound()
 	fprintf(stderr, "\n");
 	free (info);
 
+	MikMod_RegisterAllLoaders();
+
     // initialize the library
-    //md_mode |= DMODE_SOFT_SNDFX;
+    md_mode |= DMODE_SOFT_SNDFX;
 	//md_mode = DMODE_STEREO | DMODE_SURROUND | DMODE_16BITS | DMODE_SOFT_MUSIC | DMODE_SOFT_SNDFX.
-	md_mode = DMODE_16BITS | DMODE_SOFT_MUSIC | DMODE_SOFT_SNDFX;
+	//md_mode = DMODE_16BITS | DMODE_SOFT_MUSIC | DMODE_SOFT_SNDFX;
     if (MikMod_Init(""))
 		{
 		fprintf(stderr, "MikMod: Could not initialize sound, reason: %s\n",
@@ -378,18 +381,17 @@ int InitGL(GLES_STATE_T *state)										// All Setup For OpenGL Goes Here
    success = graphics_get_display_size(0 /* LCD */, &state->screenWidth, &state->screenHeight);
    assert( success >= 0 );
 
-/*
    dst_rect.x = 0;
    dst_rect.y = 0;
    dst_rect.width = state->screenWidth;
    dst_rect.height = state->screenHeight;
-*/
+/*
    // JH - testing
    dst_rect.x = 0;
    dst_rect.y = 0;
    dst_rect.width = state->screenWidth / 2;
    dst_rect.height = state->screenHeight / 2;
-
+*/
    src_rect.x = 0;
    src_rect.y = 0;
    src_rect.width = state->screenWidth << 16;
@@ -1383,9 +1385,6 @@ int main(void) {
 
 	printf("Models loaded. \n");
 
-	// Setup sound
-	StartupSound();
-
 	// Raspi videocore init
  	bcm_host_init();
 	printf("Note: ensure you have sufficient gpu_mem configured\n");
@@ -1410,6 +1409,20 @@ int main(void) {
     //SDL_WM_SetCaption("E3D Example 6 - Webfest", "");
 
     printf("SDL initialized.\n");
+
+	// Setup sound
+	StartupSound();
+
+printf("MikMod active: %d\n", MikMod_Active());
+
+	MODULE* mod = Player_Load("/home/pi/FLOWERS.IT", 4, FALSE);
+	if (mod)
+		Player_Start(mod);
+	else
+		printf("MOD not loaded!\n");
+
+	WFPlaySound(0, 0);
+	UpdateSound();
 
 	// ********************* OUTER CONTROL LOOP ************************
 	while(true)
@@ -1445,14 +1458,12 @@ int main(void) {
 				// Swap buffers
 				flip();
 
-//				DrawGLScene(&glesState);
-
-		        // Poll for the next event
-		        SDL_Event event;
-		        SDL_PollEvent( &event );
-
-		        // Check if the ESC key was pressed or the window was closed
-		        Uint8 *keys = SDL_GetKeyState(NULL);
+			        // Poll for the next event
+			        SDL_Event event;
+			        SDL_PollEvent( &event );
+		
+			        // Check if the ESC key was pressed or the window was closed
+			        Uint8 *keys = SDL_GetKeyState(NULL);
 
 				// check for start
 				if(keys[SDLK_SPACE] == SDL_PRESSED && frames > 50)
@@ -1552,6 +1563,7 @@ int main(void) {
 			g_shotsFired = 0;
 			g_shotsHit = 0;
 			WFPlaySound(4, SAMPLE_LEVELSTART);
+			UpdateSound();
 
 			RUNSTATE runState = RUNSTATE_RUNNING;
 			frames = 0;
@@ -1559,25 +1571,35 @@ int main(void) {
 			unsigned int ticks = ticks0;
 			while( RUNSTATE_RUNNING == runState )
 				{
+/*
 				// limit fps to 60 frames per second
+				if ((SDL_GetTicks() - ticks) < 10)
+					SDL_Delay(5);
 				while((SDL_GetTicks() - ticks) < 16) ;
+*/
 				ticks = SDL_GetTicks();
+				UpdateSound();
+				usleep(15000);			// needed for mikmod to process sound
 
-		        // Get mouse position
+		        	// Get mouse position
 				//SDL_PumpEvents();
-				Uint8 mousebutton = SDL_GetMouseState( &x, &y );
+				//Uint8 mousebutton = SDL_GetMouseState( &x, &y );
 
 				// Calculate and display FPS (frames per second)
 				if( (ticks-ticks0) > 1000 || frames == 0 )
-				{
+					{
 					//fps = (double)frames / (t-t0);
+					//sprintf( titlestr, 
+					//	"E3D RasPI GLES Example6 - Webfest (%d FPS) %d objects", 
+					//	frames, Scene.GetNumObjects());
 					sprintf( titlestr, 
-						"E3D RasPI GLES Example6 - Webfest (%d FPS) %d objects", 
+						"FPS %d (%d objects)\n", 
 						frames, Scene.GetNumObjects());
-				    //SDL_WM_SetCaption(titlestr, "");
+				    	//SDL_WM_SetCaption(titlestr, "");
+					//printf(titlestr);
 					ticks0 = ticks;
 					frames = 0;
-				}
+					}
 				frames ++;
 
 				// animate
@@ -1587,14 +1609,6 @@ int main(void) {
 				float playerAngle;
 				if(0 == playerDying)
 					{
-/*
-					pObject = Scene.GetObject(PLAYER_LIST, PLAYER1_ID);
-					Vector p;
-					playerAngle = GetTubeSegmentCentreAngle(&tube, currentSegment, p); 
-					pObject->position.x = p.x; 
-					pObject->position.y = p.y; 
-					pObject->SetRotation(0.0f, 0.0f, playerAngle);
-*/					
 					pObject = Scene.GetObject(PLAYER_LIST, PLAYER1_ID);
 					// interpolate player position towards "current" (target) segment
 					Vector p;
@@ -1692,17 +1706,16 @@ int main(void) {
 
 				// Flush, vsync, Swap buffers
 				flip();
-				UpdateSound();
 
 				if(debounce)
 					debounce--;
 
-		        // Poll for the next event
-		        SDL_Event event;
-		        SDL_PollEvent( &event );
-
-		        // Check if the ESC key was pressed or the window was closed
-		        Uint8 *keys = SDL_GetKeyState(NULL);
+			        // Poll for the next event
+			        SDL_Event event;
+			        SDL_PollEvent( &event );
+	
+			        // Check if the ESC key was pressed or the window was closed
+			        Uint8 *keys = SDL_GetKeyState(NULL);
 
 				// update player
 				if(0 == playerDying)
@@ -1785,6 +1798,7 @@ int main(void) {
 							// fire bullet
 							g_shotsFired++;
 							WFPlaySound(0, SAMPLE_PLAYERFIRE);
+							UpdateSound();
 							Vector pos = Scene.GetObject(PLAYER_LIST, PLAYER1_ID)->position;
 							pos.z -= 4.0f; //(Scene.GetObject(PLAYER1_ID)->x, Scene.GetObject(PLAYER1_ID)->y, Scene.GetObject(PLAYER1_ID)->z - 4.0f);
 							Vector vel(0.0, 0.0, -3.0);
@@ -1867,8 +1881,8 @@ int main(void) {
 					{
    					pObject = Scene.GetObject(PLAYER_LIST, PLAYER1_ID);
 					pObject->position.z -= 1.5f;
-					if(pObject->position.z < (-TUBE_LENGTH * 3) )
-                        runState = RUNSTATE_LEVELCOMPLETE;
+					if(pObject->position.z < (-TUBE_LENGTH * 3))
+                        			runState = RUNSTATE_LEVELCOMPLETE;
 					}
 
 				if(reloadCount) reloadCount--;
@@ -1904,8 +1918,8 @@ int main(void) {
 		} // wend (true)
 
     // Shutdown all subsystems 
-	ShutdownSound();
-    //SDL_Quit();
+    ShutdownSound();
+    SDL_Quit();
     exit(0);
 }
 
