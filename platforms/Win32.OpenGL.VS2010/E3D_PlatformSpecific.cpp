@@ -53,6 +53,8 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	//glLineWidth(3.0f);
+
 	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);		// set ambient light level
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);		// set light colour
 	glLightfv(GL_LIGHT1, GL_POSITION,LightDirection);	// set light position or direction

@@ -24,7 +24,7 @@
 //             5. Added "BARRIER" and "UFO" enemies
 
 #define DO_STARS
-#define DEBUG_START_LEVEL	0
+#define DEBUG_START_LEVEL	4
 #define SPAWNPERIOD			800
 
 // Ideas:
@@ -77,8 +77,8 @@ using namespace E3D;
 
 //#define VIEW_WIDTH		480
 //#define VIEW_HEIGHT		272
-#define VIEW_WIDTH		640
-#define VIEW_HEIGHT		480
+#define VIEW_WIDTH		1280
+#define VIEW_HEIGHT		720
 
 #define GLYPH_WIDTH		12
 #define GLYPH_HEIGHT	12
@@ -1460,7 +1460,13 @@ int main(void) {
 						v.SetLength(0.75f);
 					pObject->position += v;
 					// Interpolate player rotation towards "current" (target) segment
-					playerAngle = pObject->rotation.z + ((segmentAngle - pObject->rotation.z) * 0.2f);
+					float dangle = (segmentAngle - pObject->rotation.z);
+					if (dangle > PI)
+						dangle = dangle - (2 * PI);
+					else if (dangle < -PI)
+						dangle = dangle + (2 * PI);
+					printf("%f\n", dangle);
+					playerAngle = pObject->rotation.z + (dangle * 0.2f);
 					pObject->SetRotation(0.0f, 0.0f, playerAngle);
 					}
 

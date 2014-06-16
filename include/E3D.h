@@ -87,10 +87,14 @@ public:
 
 	void SetLength(float d)
 		{
-		float ratio = d / GetLength();
-		x *= ratio;
-		y *= ratio;
-		z *= ratio;
+		// JH 2014-06-17 - Avoid DBZ which will cause #IND
+		if (GetLength() > 0.000001f)
+			{
+			float ratio = d / GetLength();
+			x *= ratio;
+			y *= ratio;
+			z *= ratio;
+			}
 		};
 
 	void Normalise(void)

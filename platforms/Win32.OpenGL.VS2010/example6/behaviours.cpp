@@ -65,7 +65,7 @@ void LaunchEnemyBullet(Vector &pos, Vector &velocity) {
 	OBJLIST::iterator iter;
 	for(iter = objList->begin(); iter != objList->end(); iter++)
 		{
-		if(0 == iter->behaviour)
+		if(BEHAVE_NONE == iter->behaviour)
 			{
 			iter->modelNumber = EBULLET_MODEL;
 			iter->model = Scene.GetModel(EBULLET_MODEL);
@@ -288,7 +288,8 @@ void StepEnemyBullet(OBJLIST::iterator ebullet, unsigned int level)
 		{
 		ebullet->rotation.z += 0.1f;
 		ebullet->position += ebullet->velocity;
-		if(ebullet->position.z > 5.0f)
+		ebullet->counter--;
+		if(ebullet->position.z > 5.0f || ebullet->counter < 1)
 			{
 			// terminate
 			ebullet->SetPosition(0.0f, 1000.0f, 0.0f);
@@ -587,7 +588,7 @@ void StepUFO(OBJLIST::iterator ufo, TUBEDATA *tube, unsigned int level)
 					}
 				}
 			}
-		// actaully move the UFO
+		// actually move the UFO
 		d.SetLength(ufo->speed);
 		ufo->position += d;
 		ufo->rotation.z = targetAngle;
