@@ -12,7 +12,7 @@ public:
 	E3D_Object();
 	E3D_Object(const E3D_Object& lhs);
 	//void E3D_Object::operator=( const E3D_Object &rhs );
-	void operator=( const E3D_Object &rhs );
+	E3D_Object &operator=( const E3D_Object &rhs );
 	//E3D_Object(int modelNumber);
 	virtual ~E3D_Object();
 

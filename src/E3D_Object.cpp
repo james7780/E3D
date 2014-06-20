@@ -23,7 +23,6 @@ E3D_Object::E3D_Object()
 	SetScale(1.0f, 1.0f, 1.0f);
 	SetRotation(0.0f, 0.0f, 0.0f);
 	SetVelocity(0.0f, 0.0f, 0.0f);
-	flags = 0;
 	modelNumber = 0;
 	model = NULL;
 	parent = NULL;
@@ -105,49 +104,53 @@ E3D_Object::E3D_Object(const E3D_Object& lhs)
 	effect = lhs.effect;							// special effect for instance
 }
 
-void E3D_Object::operator=( const E3D_Object &rhs )
+E3D_Object &E3D_Object::operator=(const E3D_Object &rhs)
 {
-	position = rhs.position;
-	scale = rhs.scale;
-	rotation = rhs.rotation;
-	velocity = rhs.velocity;
-	modelNumber = rhs.modelNumber;
-	model = rhs.model;
-	parent = rhs.parent;
+	if (&rhs != this)
+		{
+		position = rhs.position;
+		scale = rhs.scale;
+		rotation = rhs.rotation;
+		velocity = rhs.velocity;
+		modelNumber = rhs.modelNumber;
+		model = rhs.model;
+		parent = rhs.parent;
 
-	shade = rhs.shade;
-	active = rhs.active;
-	visible = rhs.visible;
-	clipped = rhs.clipped;
-	preshade = rhs.preshade;
-	flags = rhs.flags;
+		shade = rhs.shade;
+		active = rhs.active;
+		visible = rhs.visible;
+		clipped = rhs.clipped;
+		preshade = rhs.preshade;
+		flags = rhs.flags;
 
-	behaviour = rhs.behaviour;
-	counter = rhs.counter;
+		behaviour = rhs.behaviour;
+		counter = rhs.counter;
 
-	dist = rhs.dist;
-	maxdist = rhs.maxdist;
-	speed = rhs.speed;
-	maxspeed = rhs.maxspeed;
-	accel = rhs.accel;
+		dist = rhs.dist;
+		maxdist = rhs.maxdist;
+		speed = rhs.speed;
+		maxspeed = rhs.maxspeed;
+		accel = rhs.accel;
 
-	turn = rhs.turn;
-	maxturn = rhs.maxturn;
+		turn = rhs.turn;
+		maxturn = rhs.maxturn;
 
-	energy = rhs.energy;
-	energymax = rhs.energymax;
-	nextbehaviour = rhs.nextbehaviour;
-	nextcounter = rhs.nextcounter;
+		energy = rhs.energy;
+		energymax = rhs.energymax;
+		nextbehaviour = rhs.nextbehaviour;
+		nextcounter = rhs.nextcounter;
 
-	var1 = rhs.var1;
-	var2 = rhs.var2;
-	var3 = rhs.var3;					// behaviour stuff
+		var1 = rhs.var1;
+		var2 = rhs.var2;
+		var3 = rhs.var3;					// behaviour stuff
 
-	tx = rhs.tx;
-	ty = rhs.ty;
-	tz = rhs.tz;
-	effect = rhs.effect;							// special effect for instance
+		tx = rhs.tx;
+		ty = rhs.ty;
+		tz = rhs.tz;
+		effect = rhs.effect;							// special effect for instance
+		}
 
+	return *this;
 }
 
 E3D_Object::~E3D_Object()

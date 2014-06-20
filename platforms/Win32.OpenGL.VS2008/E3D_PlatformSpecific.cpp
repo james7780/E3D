@@ -18,12 +18,10 @@ using namespace E3D;
 
 E3D_PlatformSpecific::E3D_PlatformSpecific()
 {
-
 }
 
 E3D_PlatformSpecific::~E3D_PlatformSpecific()
 {
-
 }
 
 /// Render the E3D scene to our current rendering context
@@ -123,7 +121,7 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 	{
 	OBJLIST* objList = scene->GetObjectList(i);
 	OBJLIST::const_iterator objIter;
-	for(objIter = objList->begin() ; objIter != objList->end(); objIter++)
+	for(objIter = objList->begin() ; objIter != objList->end(); ++objIter)
 		{
 		// TODO: add scene->GetCamera()->GetPosition() for getting eye pos
 		// TODO: calc distance to this object
@@ -216,9 +214,9 @@ void E3D_PlatformSpecific::DrawModel(E3D_Model *pModel)
 */
 
 	// New (2014) version using vertex arrays
-	GLfloat vertices[2000];						// TODO : make static, or store in the model
-	GLfloat normals[2000];
-	GLfloat colours[2000];
+	GLfloat vertices[2000 * 9];						// TODO : make static, or store in the model
+	GLfloat normals[2000 * 9];
+	GLfloat colours[2000 * 12];
 	GLfloat *pv = vertices;
 	GLfloat *pn = normals;
 	GLfloat *pc = colours;

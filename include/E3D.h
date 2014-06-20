@@ -30,7 +30,8 @@
 extern int E3D_debug;
 
 // E3D namespace
-namespace E3D {
+namespace E3D
+{
 
 #define E3D_VERSION		19
 #define E3D_MODEL_VERSION	3
@@ -75,14 +76,35 @@ class Vector
 public:
 	float x, y, z;
 
-	Vector() { x = 0.0f; y = 0.0f; z = 0.0f; };
-	Vector(float x0, float y0, float z0) { x = x0; y = y0; z = z0; };
+	Vector()
+		{
+		x = 0.0f;
+		y = 0.0f;
+		z = 0.0f;
+		};
+	Vector(float x0, float y0, float z0)
+		{
+		x = x0;
+		y = y0;
+		z = z0;
+		};
+	Vector(const Vector& rhs)
+		{
+		x = rhs.x;
+		y = rhs.y;
+		z = rhs.z;
+		};
 
-	void Set(float x0, float y0, float z0) { x = x0; y = y0; z = z0; };
+	void Set(float x0, float y0, float z0)
+		{
+		x = x0;
+		y = y0;
+		z = z0;
+		};
 
 	float GetLength(void)
 		{
-		return (float)sqrt(x*x + y*y + z*z);
+		return (float)sqrt(x * x + y * y + z * z);
 		};
 
 	void SetLength(float d)
@@ -113,22 +135,59 @@ public:
 		return ((x * v2.x) + (y * v2.y) + (z * v2.z));
 		}
 
-	Vector operator-() const { return Vector(-x, -y, -z);   }
+	Vector operator-() const
+		{
+		return Vector(-x, -y, -z);
+		}
 
-	Vector& operator=(const Vector& other)	{ x = other.x; y = other.y; z = other.z; return *this; }
+	Vector &operator=(const Vector &other)
+		{
+		x = other.x;
+		y = other.y;
+		z = other.z;
+		return *this;
+		}
 
-	Vector operator+(const Vector& other) const { return Vector(x + other.x, y + other.y, z + other.z);	}
-	Vector& operator+=(const Vector& other)	{ x+=other.x; y+=other.y; z+=other.z; return *this; }
+	Vector operator+(const Vector &other) const
+		{
+		return Vector(x + other.x, y + other.y, z + other.z);
+		}
+	Vector &operator+=(const Vector &other)
+		{
+		x += other.x;
+		y += other.y;
+		z += other.z;
+		return *this;
+		}
 
-	Vector operator-(const Vector& other) const { return Vector(x - other.x, y - other.y, z - other.z);	}
-	Vector& operator-=(const Vector& other)	{ x-=other.x; y-=other.y; z-=other.z; return *this; }
+	Vector operator-(const Vector &other) const
+		{
+		return Vector(x - other.x, y - other.y, z - other.z);
+		}
+	Vector &operator-=(const Vector &other)
+		{
+		x -= other.x;
+		y -= other.y;
+		z -= other.z;
+		return *this;
+		}
 
-	Vector operator*(const float v) const { return Vector(x * v, y * v, z * v);	}
-	Vector& operator*=(const float v) { x*=v; y*=v; z*=v; return *this; }
+	Vector operator*(const float v) const
+		{
+		return Vector(x * v, y * v, z * v);
+		}
+	Vector &operator*=(const float v)
+		{
+		x *= v;
+		y *= v;
+		z *= v;
+		return *this;
+		}
 
 };
 
-typedef struct {
+typedef struct
+{
 	float x, y;
 } Point;
 
@@ -147,12 +206,46 @@ class E3D_RGB {
 class Colour
 {
 public:
-	float r, g, b;
+	float r, g, b, a;
 
-	Colour() { r = 0.5f; g = 0.5f; b = 0.5f; };
-	Colour(float r0, float g0, float b0) { r = r0; g = g0; b = b0; };
+	Colour()
+		{
+		r = 0.5f;
+		g = 0.5f;
+		b = 0.5f;
+		a = 1.0f;
+		};
+	Colour(float r0, float g0, float b0, float a0 = 1.0f)
+		{
+		r = r0;
+		g = g0;
+		b = b0;
+		a = a0;
+		};
+	Colour(const Colour& rhs)
+		{
+		r = rhs.r;
+		g = rhs.g;
+		b = rhs.b;
+		a = rhs.a;
+		}
 
-	void Set(float r0, float g0, float b0) { r = r0; g = g0; b = b0; };
+	Colour &operator=(const Colour &other)
+		{
+		r = other.r;
+		g = other.g;
+		b = other.b;
+		a = other.a;
+		return *this;
+		}
+
+	void Set(float r0, float g0, float b0, float a0 = 1.0f)
+		{
+		r = r0;
+		g = g0;
+		b = b0;
+		a = a0;
+		};
 };
 
 //typedef struct {
@@ -166,40 +259,102 @@ class Vertex
 public:
 	float x, y, z;
 	float r, g, b;
-    int group[5];
+	int group[5];
 
-	Vertex() { x = 0.0f; y = 0.0f; z = 0.0f; r = 0.5f; g = 0.5f; b = 0.5f; };
-	Vertex(float x0, float y0, float z0) { x = x0; y = y0; z = z0; r = 0.5f; g = 0.5f; b = 0.5f; };
+	Vertex()
+		{
+		x = 0.0f;
+		y = 0.0f;
+		z = 0.0f;
+		r = 0.5f;
+		g = 0.5f;
+		b = 0.5f;
+		group[0] = 0;
+		group[1] = group[2] = group[3] = group[4] = -1;
+		};
+	Vertex(float x0, float y0, float z0)
+		{
+		x = x0;
+		y = y0;
+		z = z0;
+		r = 0.5f;
+		g = 0.5f;
+		b = 0.5f;
+		group[0] = 0;
+		group[1] = group[2] = group[3] = group[4] = -1;
+		};
+	Vertex(const Vertex& rhs)
+		{
+		x = rhs.x;
+		y = rhs.y;
+		z = rhs.z;
+		r = rhs.r;
+		g = rhs.g;
+		b = rhs.b;
+		group[0] = rhs.group[0];
+		group[1] = rhs.group[1];
+		group[2] = rhs.group[2];
+		group[3] = rhs.group[3];
+		group[4] = rhs.group[4];
+		}
+	Vertex &operator=(const Vertex &other)
+		{
+		x = other.x;
+		y = other.y;
+		z = other.z;
+		r = other.r;
+		g = other.g;
+		b = other.b;
+		group[0] = other.group[0];
+		group[1] = other.group[1];
+		group[2] = other.group[2];
+		group[3] = other.group[3];
+		group[4] = other.group[4];
+		return *this;
+		}
 
-	void SetPosition(float x0, float y0, float z0) { x = x0; y = y0; z = z0; };
-	void SetColour(float r0, float g0, float b0) { r = r0; g = g0; b = b0; };
+	void SetPosition(float x0, float y0, float z0)
+		{
+		x = x0;
+		y = y0;
+		z = z0;
+		};
+	void SetColour(float r0, float g0, float b0)
+		{
+		r = r0;
+		g = g0;
+		b = b0;
+		};
 };
 
-typedef struct {
-    Colour colour;						// Line colour
+typedef struct
+{
+	Colour colour;						// Line colour
 	unsigned int vert1;
 	unsigned int vert2;
-    int group;
+	int group;
 } Line;
 
 // Face on a 3D model
-typedef struct {
+typedef struct
+{
 	short type, numverts;
 	short p[6];							// vertex indices
 	short n[6];							// normal indices
-    Colour colour;						// polygon colour
-    Colour vcol[6];						// vertex colours
-    short shade;		// 0 = no shade, 1 = shade
-    short gouraud;		// 0 = flat, 1 = gouraud
-    short filling;		// 0 = solid colour, 1 = colour grad, 2 = texture
+	Colour colour;						// polygon colour
+	Colour vcol[6];						// vertex colours
+	short shade;		// 0 = no shade, 1 = shade
+	short gouraud;		// 0 = flat, 1 = gouraud
+	short filling;		// 0 = solid colour, 1 = colour grad, 2 = texture
 	short texmap;		// 1+ = texmap index
-    Point texp[6];
+	Point texp[6];
 	float dist;
-    int group[5];
+	int group[5];
 } Face;
 
-typedef struct {
-    char name[20];
+typedef struct
+{
+	char name[20];
 } Group;
 
 /*
@@ -323,10 +478,11 @@ typedef struct {
 } PSX_Texture;
 */
 
-enum E3D_Result {
+enum E3D_Result
+	{
 	E3D_SUCCESS = 0,
-	E3D_FAIL = 1
-};
+	E3D_FAIL		= 1
+	};
 
 #include "E3D_Utility.h"
 #include "E3D_Model.h"

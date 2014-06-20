@@ -7,6 +7,7 @@
 //////////////////////////////////////////////////////////////////////
 
 // Note: This is a "static" class!!!
+// Note 2: Don't use these - use Vector class functions instead
 
 #include <stdio.h>
 #include <string.h>
@@ -40,24 +41,23 @@ E3D_Utility::~E3D_Utility()
 
 
 /// Calculate the length of a 3D vector
-float E3D_Utility::vector_length_f(float x, float y, float z)
+float E3D_Utility::VectorLengthf(float x, float y, float z)
 {
    return (float)sqrt(x*x + y*y + z*z);
 }
 
 
 /// Normalise a 3D vector (ie: make it length = 1.0)
-void E3D_Utility::normalize_Vector(float *x, float *y, float *z)
+void E3D_Utility::NormaliseVectorf(float *x, float *y, float *z)
 {
-   float length = 1.0f / vector_length_f(*x, *y, *z);
-
+   float length = 1.0f / VectorLengthf(*x, *y, *z);
    *x *= length;
    *y *= length;
    *z *= length;
 }
 
 /// Calculate cross product
-void E3D_Utility::cross_product_f(float x1, float y1, float z1, float x2, float y2, float z2, float *xout, float *yout, float *zout)
+void E3D_Utility::CrossProductf(float x1, float y1, float z1, float x2, float y2, float z2, float *xout, float *yout, float *zout)
 {
     *xout = (y1 * z2) - (z1 * y2);
     *yout = (z1 * x2) - (x1 * z2);
@@ -65,15 +65,15 @@ void E3D_Utility::cross_product_f(float x1, float y1, float z1, float x2, float 
 }
 
 /// Calculate cross product
-void E3D_Utility::cross_product_f(Vector v1, Vector v2, Vector *vout)
+void E3D_Utility::CrossProductf(const Vector &v1, const Vector &v2, Vector &vout)
 {
-    vout->x = (v1.y * v2.z) - (v1.z * v2.y);
-    vout->y = (v1.z * v2.x) - (v1.x * v2.z);
-    vout->z = (v1.x * v2.y) - (v1.y * v2.x);
+    vout.x = (v1.y * v2.z) - (v1.z * v2.y);
+    vout.y = (v1.z * v2.x) - (v1.x * v2.z);
+    vout.z = (v1.x * v2.y) - (v1.y * v2.x);
 }
 
 /// Calculate Z component of a polygon's normal vector
-float E3D_Utility::polygon_z_normal_f(Vector *v1, Vector *v2, Vector *v3)
+float E3D_Utility::PolygonZNormalf(Vector *v1, Vector *v2, Vector *v3)
 {
    return ((v2->x-v1->x) * (v3->y-v2->y)) - ((v3->x-v2->x) * (v2->y-v1->y));
 }
