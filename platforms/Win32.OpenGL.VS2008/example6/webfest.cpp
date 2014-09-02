@@ -176,7 +176,7 @@ void StartupSound()
 	fprintf(stderr, "Registered drivers:\n");
 	fprintf(stderr, info);
 	fprintf(stderr, "\n");
-	free (info);
+	//free (info);
 
     // initialize the library
     //md_mode |= DMODE_SOFT_SNDFX;
@@ -1239,6 +1239,7 @@ int main(void) {
 	// Set up the E3D scene
 	Scene.Start();
 	Scene.SetRenderDistance(1000.0f);
+	Scene.SetBackColour(0.1f, 0.0f, 0.1f);
 
 	// Set up the scene's default light (light0)
 	E3D_Light *light0 = Scene.GetLight(0);
@@ -1315,7 +1316,7 @@ int main(void) {
 			while(frames < 400)
 				{
 				// fps limiter
-				while((glfwGetTime() - startTime) < 0.033) ;
+				while((glfwGetTime() - startTime) < 0.016) ;
 				startTime = glfwGetTime();
 
 				MoveStars(false);
@@ -1360,7 +1361,7 @@ int main(void) {
 			while(frames < 800)
 				{
 				// fps limiter
-				while((glfwGetTime() - startTime) < 0.033) ;
+				while((glfwGetTime() - startTime) < 0.016) ;
 				startTime = glfwGetTime();
 
 				DrawHiScoreScreen(frames++);

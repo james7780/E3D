@@ -1205,6 +1205,7 @@ int CreateScene(unsigned int level, TUBEDATA *tube) {
 		pObject->counter = 0;
 		pObject->behaviour = BEHAVE_NORMAL;
 	}	
+
 	// UFO's
 	for(i = 0; i < spawnData->numUfos; i++) {
 		// calculate enemy position and rotation
@@ -1245,6 +1246,7 @@ bool IsPlayerHit()
 				case FLIPPER_MODEL :
 				case SPIKE1_MODEL :
 				case SPIKE2_MODEL :
+				case BARRIER_MODEL :
 					{
 					if(fabs(objIter->position.z - player->position.z) < HIT_RADIUS)
 						{

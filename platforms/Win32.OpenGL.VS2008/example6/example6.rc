@@ -52,7 +52,6 @@ END
 // WAVE
 //
 
-IDR_WAVE1               WAVE                    "blaster audio\\audiofinal\\smp_alienninja.wav"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

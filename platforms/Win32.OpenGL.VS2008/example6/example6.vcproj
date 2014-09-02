@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\dev\libmikmod-3.2.0-beta2\include&quot;"
+				AdditionalIncludeDirectories="&quot;C:\Users\dev7\Documents\GitHub\E3D\libmikmod-3.3.6\win32&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mikmod.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="libmikmod.lib opengl32.lib glu32.lib odbc32.lib odbccp32.lib"
 				OutputFile=".\Debug/example6.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
