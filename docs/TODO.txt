@@ -14,9 +14,9 @@ Examples:
 1. Load and display a single model (loadmodel.cpp)			*** DONE ***
 2. Load a scene from disk and display it (loadscene.cpp)		*** DONE ***
 3. Create a scene and animate it (createscene.cpp)			*** DONE ***
-4. Tailgunner								*** DONE ***
-5. Battlezone								*** DONE ***
-6. Tempest
+4. Tailgunner (example4)						*** DONE ***
+5. Battlezone (example5)						*** DONE ***
+6. Tempest (example6 / webfest)						*** DONE ***
 
 
 Docs:

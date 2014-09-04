@@ -1,9 +1,0 @@
-# Handmade JH 2007
-mtllib star.mtl
-o star
-# 2 vertices, 1 lines, 0 faces
-v 0.0 0.0 1.0
-v 0.0 0.0 -1.0
-usemtl default
-l 1 2
-
