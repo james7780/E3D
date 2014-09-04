@@ -2,7 +2,7 @@
 // JH 2007
 
 // NB: Include our E3D header file
-#include "../../../include/E3D.h"
+#include "../../include/E3D.h"
 // NB: Set our C++ namespace prefix to E3D so we can more easily use E3D objects
 using namespace E3D;
 

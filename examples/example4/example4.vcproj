@@ -200,28 +200,8 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="example4.cpp"
+				RelativePath=".\example4_glfw.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -235,7 +215,7 @@
 			>
 		</Filter>
 		<File
-			RelativePath="..\common\glfw.lib"
+			RelativePath="..\..\platforms\Win32.OpenGL.VS2008\common\glfw.lib"
 			>
 		</File>
 	</Files>

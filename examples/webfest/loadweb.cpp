@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../../../include/E3D.h"
+#include "../../include/E3D.h"
 using namespace E3D;
 
 #include "webfest.h"
@@ -140,7 +140,7 @@ int LoadWeb(char *filename, TUBEDATA *tube)
 		{
 		fscanf(pfile, "%s", buffer);
 		//fprintf(plog, "%s %s %f\n", buffer, buffer2, a);
-		if(0 == stricmp(buffer, "end"))
+		if(0 == _stricmp(buffer, "end"))
 			{
 			end = TRUE;
 			}

@@ -51,7 +51,7 @@
 //#include <gl\glu.h>					// Header File For The GLu32 Library
 //#include <gl\glaux.h>				// Header File For The Glaux Library
 #include "../../platforms\Win32.OpenGL.VS2008/common/glfw.h"			// Header File for the GL Framwork Lib
-#include <mikmod.h>					// Header file for MikMod Audio library
+#include "../../platforms\Win32.OpenGL.VS2008/common/mikmod.h"		// Header File for MikMod
 #include "hiscore.h"				// generic high-score module
 #include "../../include/E3D.h"		
 
@@ -582,7 +582,7 @@ void DrawHiScoreScreen(int frame)
 	char stemp[100];
 	for(int i=0; i<10; i++) {
 		//glColor3ubv((GLubyte *)&colourtable[i+coffset]);
-		sprintf(stemp, "%02d   %-10s   %06d  %d", i+1,
+		sprintf_s(stemp, 100, "%02d   %-10s   %06d  %d", i+1,
 					HiScore_GetName(i),
 					HiScore_GetScore(i),
 					HiScore_GetLevel(i));
@@ -1440,9 +1440,7 @@ int main(void) {
 				if( (t-t0) > 1.0 || frames == 0 )
 				{
 					fps = (double)frames / (t-t0);
-					sprintf( titlestr, 
-						"E3DOO Win32/OpenGL Example6 (%.1f FPS) %d objects", 
-						fps, Scene.GetNumObjects());
+					sprintf_s( titlestr, 500, "E3DOO Win32/OpenGL Example6 (%.1f FPS) %d objects", fps, Scene.GetNumObjects());
 					glfwSetWindowTitle( titlestr );
 					t0 = t;
 					frames = 0;
@@ -1477,7 +1475,7 @@ int main(void) {
 					{
 					g_shakeCount--;
 					Vector p = camera->GetPosition();
-					p += Vector(rand()%3-1, rand()%3-1, rand()%3-1) * 0.5f;
+					p += Vector((float)(rand()%3-1), (float)(rand()%3-1), (float)(rand()%3-1)) * 0.5f;
 					camera->SetPosition(p);
 					}
 
@@ -1492,11 +1490,11 @@ int main(void) {
 
 				// Overlay 2D text on our display
 				Setup2DOverlay();
-				char s[20];
+				char s[64];
 				if(levelStart > 0)
 					{
 					g_textColour = YELLOW;
-					sprintf(s, "LEVEL %02d", level);
+					sprintf_s(s, 64, "LEVEL %02d", level);
 					DrawVectorText(s, VIEW_WIDTH/2 - 55, VIEW_HEIGHT/2 - 20, GLYPH_WIDTH, 0);
 					// Get tube colour for this level
 					g_textColour = GetWebColour(level);
@@ -1506,9 +1504,9 @@ int main(void) {
 				else
 					{
 					g_textColour = WHITE;
-					sprintf(s, "HISCORE %06d", HiScore_GetScore(0));
+					sprintf_s(s, 64, "HISCORE %06d", HiScore_GetScore(0));
 					DrawVectorText(s, VIEW_WIDTH - GLYPH_WIDTH*16, 8, GLYPH_WIDTH, 0);
-					sprintf(s, "SCORE %06d", g_score);
+					sprintf_s(s, 64, "SCORE %06d", g_score);
 					DrawVectorText(s, 16, 8, GLYPH_WIDTH, 0);
 					// draw lives left
 					memset(s, 0, 20);
@@ -1536,7 +1534,7 @@ int main(void) {
 					{
 					unsigned int hitPerc = ((g_shotsHit+1)*100)/(g_shotsFired+1);		// avoid DBZ exception
 					g_textColour = GREEN;
-					sprintf(s, "SHOOTING %d/%d [%d%%]", g_shotsHit, g_shotsFired, hitPerc);
+					sprintf_s(s, 64, "SHOOTING %d/%d [%d%%]", g_shotsHit, g_shotsFired, hitPerc);
 					DrawVectorText(s, VIEW_WIDTH/2 - strlen(s)*GLYPH_WIDTH/2, VIEW_HEIGHT/4, GLYPH_WIDTH, 0);
 					if (hitPerc == 100)
 						{	

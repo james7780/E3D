@@ -197,31 +197,11 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="example1.cpp"
+			RelativePath=".\example1_glfw.cpp"
 			>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions=""
-					BasicRuntimeChecks="3"
-					BrowseInformation="1"
-				/>
-			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="..\common\glfw.lib"
+			RelativePath="..\..\platforms\Win32.OpenGL.VS2008\common\glfw.lib"
 			>
 		</File>
 	</Files>

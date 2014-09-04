@@ -308,6 +308,7 @@ int E3D_Model::Load3DO(char *filename)
 		char scmd[128];
 		char stemp[128];
 		sscanf_s(pc, "%s", &scmd[0], _countof(scmd));
+		pc += strlen(scmd);
 
 		if (logFile)
 			*logFile << "Command is " << scmd << '\n';
