@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //
 // E3D_PlatformSpecific.cpp: implementation of platform-specific stuff
-//                           for Raspberry Pi
+//                           for Win32
 //
 // Copyright 2014 James Higgs
 // 
@@ -102,16 +102,16 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 	camera->GetLookAtMx(cameraMx);
 
 	// Upload camera matrix to projection matrix
-  glMultMatrixf(cameraMx);
-
+	glMultMatrixf(cameraMx);
 
 	// 3. Clear pixel and depth buffer if required
-	if(clear) {
+	if(clear)
+		{
 		Colour bgCol = scene->GetBackColour();
 		glClearColor(bgCol.r, bgCol.g, bgCol.b, 1.0f);				// Background colour
 		//glClearDepth(1.0f);									// Depth Buffer Setup
-		glClear(GL_COLOR_BUFFER_BIT); // | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
-	}
+		glClear(GL_COLOR_BUFFER_BIT); // || GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+		}
 
 	glMatrixMode(GL_MODELVIEW);					// Make sure we're using the Modelview Matrix
 	glLoadIdentity();
@@ -161,7 +161,7 @@ void E3D_PlatformSpecific::RenderScene(E3D_Scene *scene, float viewWidth, float 
 void E3D_PlatformSpecific::DrawModel(E3D_Model *pModel)
 {
 // TEST!
-	glDisable(GL_LIGHTING);								// Enable Lighting
+//	glDisable(GL_LIGHTING);								// Enable Lighting
 // END TEST
 
 /* OLD "non-GLES" version
@@ -297,7 +297,7 @@ void E3D_PlatformSpecific::DrawModel(E3D_Model *pModel)
 	// draw lines
 	if(pModel->m_numLines > 0)
 		{
-		glDisable(GL_LIGHTING);								// Enable Lighting
+		glDisable(GL_LIGHTING);								// Disable Lighting
 		glDisable(GL_TEXTURE_2D);
 /* OLD "non-GLES" version
 		glBegin(GL_LINES);

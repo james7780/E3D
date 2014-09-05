@@ -45,8 +45,8 @@ private:
 	Vector m_dirn;				// direction
 	Vector m_up;					// "up" vector
 	float m_FOV;					// field of view (in radians, not degrees)
-	float m_viewWidth;				// width of view 
-	float m_viewHeight;				// height of view
+	//float m_viewWidth;				// width of view 
+	//float m_viewHeight;				// height of view
 
 };
 

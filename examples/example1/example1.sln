@@ -1,11 +1,8 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example1", "example1.vcproj", "{3F2FF871-D898-44B4-8F87-2C0964089FDE}"
-	ProjectSection(ProjectDependencies) = postProject
-		{888E9FAF-C232-478E-B5AE-7CDB275CE4EE} = {888E9FAF-C232-478E-B5AE-7CDB275CE4EE}
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example1", "example1.vcxproj", "{3F2FF871-D898-44B4-8F87-2C0964089FDE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32OpenGL", "..\..\platforms\Win32.OpenGL.VS2008\Win32OpenGL.vcproj", "{888E9FAF-C232-478E-B5AE-7CDB275CE4EE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32OpenGL", "..\..\platforms\Win32.OpenGL.VS2008\Win32OpenGL.vcxproj", "{888E9FAF-C232-478E-B5AE-7CDB275CE4EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -19,7 +19,7 @@
 using namespace E3D;
 
 #define VIEW_WIDTH		600
-#define VIEW_HEIGHT		400
+#define VIEW_HEIGHT		360
 
 GLfloat zoom = 20;
 
@@ -69,7 +69,7 @@ int main(void) {
 
 	int		running, frames, x, y;
     double  t, t0, fps;
-    char    titlestr[ 200 ];
+    char    titlestr[200];
 	int		scr_mode;
 	E3D_Object *pObject;
 
@@ -85,17 +85,18 @@ int main(void) {
 
 	// The scene also contains 1 default camera (camera 0)
 	E3D_Camera *camera = Scene.GetCamera(0);
-	camera->SetPosition(0.0f, 10.0f, -20.0f);
+	camera->SetPosition(0.0f, 5.0f, -40.0f);
 	camera->SetDirection(0.0f, 0.0f, 1.0f);
 	camera->SetUpVector(0.0f, 1.0f, 0.0f);
 	camera->SetFOV(60.0f);
 
 	// Add a 3D model to the scene
-	E3D_Model *model = Scene.AddModel("hwing", "hwing.obj");
+	//E3D_Model *model = Scene.AddModel("hwing", "hwing.obj");
+	E3D_Model *model = Scene.AddModel("robot", "robot.obj");
 	model->CalculateNormals();
 
 	// Create a 3D object instance in the scene
-	pObject = Scene.AddObject(0, "hwing");
+	pObject = Scene.AddObject(0, "robot");
 	pObject->SetPosition(0.0f, 0.0f, 0.0f);
 
 	// make our camera look at the object
@@ -145,9 +146,7 @@ int main(void) {
         if( (t-t0) > 1.0 || frames == 0 )
         {
             fps = (double)frames / (t-t0);
-            sprintf( titlestr, 
-				"E3DOO Win32OpenGL Example1 (%.1f FPS) %d objects", 
-				fps, Scene.GetNumObjects() );
+            sprintf_s(titlestr, 200, "E3DOO Win32OpenGL Example1 (%.1f FPS) %d objects", fps, Scene.GetNumObjects());
             glfwSetWindowTitle( titlestr );
             t0 = t;
             frames = 0;
