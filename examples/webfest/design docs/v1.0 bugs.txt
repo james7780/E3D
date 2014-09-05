@@ -1,0 +1,45 @@
+Sorry, me again.
+
+Injust stumbled across a fairly major bug with the game.
+I was playing and going well until at around stage 25 maybe 26 or 27, did not notice exactly as the screens flicked by pretty quickly.
+Anyway what happened was I finished a level (like I said I think 25), the next level screen came up and then immediately acted as though Id completed the level and gave the screen "SHOOTING 0/0 [100%]  PERFECT   BONUS 20000".
+
+This continued, and I just waited to see what would happen.
+Anyway it did this and reached level 100 and stopped...froze, I had to turn off the PSP.
+
+This only happened the once as I have not tried again to reach that level.
+
+Another bug is that if you hit the "start" button during a game it pauses the game (not mentioned in the manual that this officialy does this). X / fire resumes.
+But if you leave it paused for around 40 seconds the PSP turns off completely.
+
+Another thing I noticed is that if you press the "start" button when the initial intro screen is displayed (the one that says "PRESS FIRE TO START" the game exits to the Sony XMB (What I thought the "Home" button, and choosing to quit would do).
+
+Cheers,
+Shane
+
+---- Shane <shanetb@telstra.com> wrote:
+> Hi James,
+>
+> Sorry forgot to put this in previous email,
+>
+> I have made a background picture & icon picture for the eboot...not sure if you are interested but I have attached them anyway. I used PSP Content Manager v1.7 to add them to the eboot.
+>
+> Cheers,
+> Shane
+>
+> ---- Shane <shanetb@telstra.com> wrote:
+> > Hi James,
+> >
+> > Just download and played your PSP game WebFest.
+> > Very good, I like it.
+> > Only issue I have found is that the PSP locks up when you select Home and try to exit.
+> > I am using custom firmware 3.52 M33-4
+> >
+> > I pretty much only use my PSP for Homebrew and all my other stuff including quite a bit of fw1.50 stuff runs fine and does not have this problem.
+> >
+> > (I currently have 43 different homebrew programs on my memory stick and its probably about a 50/50 split between Homebrew for CFW and Homebrew for fw1.50)
+> >
+> > Does the (HOME) and exit work fine for you on 3.02 OE-B ?
+> >
+> > Cheers,
+> > Shane

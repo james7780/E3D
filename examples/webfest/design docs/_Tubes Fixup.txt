@@ -1,0 +1,9 @@
+1. Sound
+2. Web mesh during web complete zoom
+3. Player ship mesh changing
+4. Extra lives
+5. Adjustment of enemy timing/sequencing
+6. Adjustment of wave enemy composition
+7. Implement more advanced enemies for later waves.
+8. BG stars during gameplay (without slowdown)
+9. kernelFlushCache only once per frame (not every model)

@@ -1,0 +1,32 @@
+1. Game focus
+	- What is the game really about?
+		eye-hand, reflex satisfaction 
+	- What must the player do?
+		*advance as far as possible by clearing webs
+	- What is the fantasy?
+		* defeat alien horde
+	- What do I want the player to experience?
+		* satisfaction at being dextrous enough to clear a web
+
+2. Research, cogitate, meditate
+
+3. Gfx and sound must *communicate* with player meaningfully.
+	- barebones gfx
+	- barebones sfx
+	- sfx for each enemy "action" (eg: flip, split, etc)
+
+4. Take special care with input
+	- joystick/button "feel" must be right/natural
+	- speed of movement on web needs to be tuned
+	- fire rate and responsiveness needs to be tuned
+	- option to use analog stick?
+
+5. Learning curve
+	- Should be linear
+	- Allow player top start on a more difficult level (up to level 10?)
+	- Analyse player failure (must not be too arbitrary)
+		* failure through "overload" is OK
+		* coll detect must be good
+		* enemy visibility must be good
+
+

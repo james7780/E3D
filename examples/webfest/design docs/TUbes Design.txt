@@ -1,0 +1,208 @@
+Names:
+	"Space Pests"
+	"Tempura"
+	"Tempex"
+	"Space Tubes"
+	"Web Blaster"
+	"Webfest"
+
+- "Trains" or "Snakes" of enemies (3 to 5 enemies)
+- Bonus points for good shooting (hit ratio)
+- Enemy with shell that blows off after first hit (2nd hit to kill)
+- Rapid fire pickup
+- Wingmen pickup
+- Shield/invincibility pickup
+- 2x pickup
+- 4x pickup
+- Zapper pickup
+- Kidnap pickup
+- 1 Up pickup (looks like your ship)
+- Slowdown pickup "Molasses" pickup (deenergises grid to slow down enemies)
+- Warp pickup (warps to another level)
+- Gyruss-style pickups (ie: shoot cargo ship to grab pickup)
+- Use pickups like in carting game (ie: can only have 1 pickup in "store" at once)
+- Can "jump" to the other side of the web
+- Abstract (characters designed for quick recognition)
+- Ideas from other games:
+	- Geometry Wars: Enemies that dodge bullets, Black Hole
+	- Robotron: Pick up friendlies, enemies you can only shoot from behind
+	- Defender: Enemies "stealing" your resources, exploding web
+	- Galaga: Kidnap enemy (or enemy kidnaps you), enemy formations
+	- Beamrider: Enemies switch lanes, fire and zoom away, bonus boss at end of level
+	- Gyruss: Enemies carry pickups, asteroids, bonus rounds
+	- Space Giraffe: Bull charge
+- Other Ideas:
+	- Enemies "chew" tube starting from other end
+		- If too much of tube is chewed, it disintegrates
+	- "Flush" tube (like a toilet) - similar to zapper
+		- collect 3 flush tokens?
+	- Survival shooter (emphasis on manic gameplay, not options/powerups/etc)
+	- Warp/Morph web to defeat enemies
+		- eg: "flatten" web to squash enemies
+		- eg: "pinch" web so that enemies are confined to a small bottleneck where
+                      your bullets can hit them all
+	- "Score Race" 2-player mode
+		- 2 players race to score most points
+	- "Evil Overlord" 2-player mode
+		- Player 2 oversees the release of enemies into the web 
+		- Player 1 tries to survive wave
+		- First to 3 victories wins
+	- "Shift" web segments so that enemies fall off
+
+- Bonus rounds (like gyruss/galaga)
+- Boss rounds
+- 2 player functionality
+	- Twin Tempest (coop mode) - players share lives, can rescue captured comrade
+	- ?Slightly bigger web (or only the bigger webs)? ?More/faster enemies?
+
+Enemies:
+
+1. Grunt (Flipper)
+	- first few levels, just comes straight up
+	- later levels, can swap lanes (towards player)
+	- when at top of web, flips towards player
+	- also "Mad Flipper" (different colour, moves much faster)
+
+2. Pod (Tanker)
+	- Start level 2
+	- Comes straight up (?firing?)
+	- splits into 2 grunts (or other things) when hit
+	- zooms back again if reaches the top
+
+3. Super Pod
+	- Start level 10
+	- Comes striaght up
+	- Moves around randomly once close
+	- Has shell/sheild that has to be blown off first
+	- Fires triple shot
+	- splits into 4 grunts
+
+4. Barrier (rock/asteroid)
+	- Start level 5 (or every 5th level?)
+	- Comes straight up
+	- Indestructible
+	- Explodes like a mine when hit with a missile
+
+5. Mine
+	- Start Level 10
+	- Comes straight up
+	- Sticks to the top of the web until hit by another enemy or player (or bullet)
+	- Causes explosion that destroys enemies (or player) in vicinity
+
+6. Train/Snake
+	- Start Level 20
+
+
+7. Zapper/Pulsar
+	- Electrifies a segment of the web
+	- All pulsars pulse at the same time
+
+8. Black Hole
+	- Start Level 15
+	- Spontaneously grows on web
+	- Sucks in nearby enemies
+	- ???
+
+
+
+
+Shapes:
+1. Flat
+2. V
+3. Wave
+4. Wide U
+
+
+Possible story:
+Evil Zarkons are speading thru the universe, creating death tubes which they will use to project dark matter beams to destroy planets.
+
+Deenergise tube web by destroying web generators (requires special missiles that you collect by destroying enemies). Web then collapses.
+
+
+Lessons learnt from Previous games:
+1. Avoid slow gameplay
+2. Collision detection must be good
+3. Challenge must ramp up fairly quickly (new challenge every level)
+4. No "sticky" / bastard webs
+
+Engines:
+1. 3D
+2. Sequencing engine
+3. Behaviour engine
+4. 
+
+
+Initial Implementation:
+
+- 4 enemy types (flipper, pod, spiker, fuseball)
+- 10 webs
+- 4 powerups/bonuses (wingmen, 2x, 4x, shield)
+- Wireframe gfx
+- No sound
+- Particle/frag effects (like asteroids)
+
+
+
+
+Core Game Analysis:
+
+Shooter/Dodger
+3D Robotron (set number of enemies in "waves")
+Strategy is in prioritising enemies
+Challenge is in learning strategies to defeat webs
+Challenge is in shooter skill to survive wave
+
+
+Core Game Improvement:
+
+Reduce "death randomness"
+	- enemies more visible
+	- good collision detection
+Improve enemy AI (esp. how enemies work together)
+	- enemies get smarter/faster at higher levels
+	- enemies do unexpected things (suicide, get scared etc)
+Improve weapons (grenades/bombs, lasers, etc)
+Trap enemies (eg: time detonation of mines)
+Add "collector" gameplay element (collect powerups, grenades)
+Improve control
+	- Jump (limited count, or must be enabled)
+	- Dash (moves 4 "blocks" sideways)
+Improve effects
+	- Enemy/player explosion effects
+	- Bullet trail effects
+	- More particles for bigger enemies
+	- "web pulsing" effects (glowing/dimming, expanding contracting, etc)
+	- bullet launch flash for enemies
+Viewpoint
+	- Option: Camera follows player round web
+More recognisable "Areas":
+	- Areas with recognisable themes:
+		- blue zone
+		- green zone
+		- cyan zone
+		- purple zone
+		- etc
+	- Each zone has a different mix of enemies
+	- Each zone has slightly different strategies
+	- Each zone has a different mix of powerups
+	- Each zone has a different webs
+	- Each zone has different background effects
+	- 3 to 5 webs per zone
+	- Zones give players more concept of progression
+		"I got to green zone!"
+	- Players can warp to a zone they've got to before.
+	- Bonus rounds between zones
+
+Challenge
+	- Using shooter skills, strategy and powerups to defeat webs
+	- Hit percentage
+	- Perfect score in bonus rounds
+	- Two player score race
+	- Bosses or UFO bonus
+
+
+
+
+
+
+
