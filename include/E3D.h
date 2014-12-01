@@ -124,13 +124,13 @@ public:
 		SetLength(1.0f);
 		};
 
-	Vector CrossProduct(const Vector &v2)
+	Vector CrossProduct(const Vector &v2) const
 		{
 		Vector vout((y * v2.z) - (z * v2.y), (z * v2.x) - (x * v2.z), (x * v2.y) - (y * v2.x));
 		return vout;
 		}
 
-	float DotProduct(const Vector &v2)
+	float DotProduct(const Vector &v2) const
 		{
 		return ((x * v2.x) + (y * v2.y) + (z * v2.z));
 		}

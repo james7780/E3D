@@ -15,22 +15,17 @@ public:
 	void SetCamera(const Vector &posn, const Vector &dirn, const Vector &up, float fov);
 	void SetPosition(float x1, float y1, float z1);
 	void SetPosition(const Vector &p);
-	Vector GetPosition(void);
+	Vector GetPosition() const;
 	void SetDirection(float x1, float y1, float z1);
 	void SetDirection(const Vector &dir);
-	Vector GetDirection(void);
+	Vector GetDirection() const;
 	void SetUpVector(float x1, float y1, float z1);
 	void SetUpVector(const Vector &up);
-	Vector GetUpVector(void);
-	//void SetViewWidth(float width);
-	//void SetViewHeight(float height);
-	//float GetViewWidth(void);
-	//float GetViewHeight(void);
-	//float GetAspectRatio(void);
+	Vector GetUpVector() const;
 	void SetFOV(float fov);
-	float GetFOV(void);
+	float GetFOV() const;
 	void SetRoll(float r1);
-	float GetRoll(void);
+	float GetRoll() const;
 
 	void LookAt(float x1, float y1, float z1);
 	void LookAt(const Vector &target);
@@ -40,13 +35,9 @@ public:
 
 private:
 	Vector m_pos;					// position
-	//float rx, ry, rz;				// rotation
 	float m_roll;
 	Vector m_dirn;				// direction
 	Vector m_up;					// "up" vector
 	float m_FOV;					// field of view (in radians, not degrees)
-	//float m_viewWidth;				// width of view 
-	//float m_viewHeight;				// height of view
-
 };
 

@@ -1,14 +1,14 @@
 /*
  *		E3D example 6: WebFest (tempest clone)
- *		James Higgs 2006/2007
+ *		James Higgs 2006-2014
  *
  *		This Code based on Jeff Molofee's OpenGL template
  */
 
 // TODO: fix timing of spikers in later levels
-// TODO: PS2 version
 
 // Changlelog:
+// 
 // 31/03/2008: 1. Rebalanced enemy spawning timing (ie: enemy start distances)
 //
 // 24/03/2008: 1. If killed while going down tube, now go to next level.
@@ -76,8 +76,10 @@ using namespace E3D;
 
 //#define VIEW_WIDTH		480
 //#define VIEW_HEIGHT		272
-#define VIEW_WIDTH		1280
-#define VIEW_HEIGHT		720
+//#define VIEW_WIDTH		1280
+//#define VIEW_HEIGHT		720
+#define VIEW_WIDTH		960
+#define VIEW_HEIGHT		544
 
 #define GLYPH_WIDTH		12
 #define GLYPH_HEIGHT	12
@@ -85,10 +87,10 @@ using namespace E3D;
 #define STARFIELD_WIDTH	600
 
 // Windows/GL version variables
-bool	active=TRUE;		// Window Active Flag Set To TRUE By Default
-bool	fullscreen=TRUE;	// Fullscreen Flag Set To Fullscreen Mode By Default
-bool	light;				// Lighting ON/OFF ( NEW )
-bool	lp;					// L Pressed? ( NEW )
+//bool	active = true;		// Window Active Flag Set To TRUE By Default
+//bool	fullscreen = true;	// Fullscreen Flag Set To Fullscreen Mode By Default
+//bool	light;				// Lighting ON/OFF ( NEW )
+//bool	lp;					// L Pressed? ( NEW )
 
 GLuint	texture[1];			// Storage For 1 Texture
 GLuint	texid;
@@ -129,6 +131,8 @@ unsigned int g_shakeCount = 0;
 
 // Our scene!
 E3D_Scene Scene;
+
+HiScoreTable hiScoreTable;
 
 // object instance map for player object list
 // NB: Objects must be added to the player object list in this order
@@ -538,8 +542,6 @@ void CreateTitleScene(void)
 
 void DrawTitleScreen(int frame)
 {
-	//float sf;
-
 	// 3D stuff
 	for(int i = 0; i < 6; i++)
 		{
@@ -566,44 +568,38 @@ void DrawTitleScreen(int frame)
 // Draw the high score screen
 void DrawHiScoreScreen(int frame)
 {
-	//float sf;
-	//sf = 3.0f + cosf((float)frame / 10.0f) * 0.1f;
-
 	// Do 3D stuff here
 	Scene.Render(VIEW_WIDTH, VIEW_HEIGHT, true);
 
 	// Text overlay
 	Setup2DOverlay();
 
-	//glColor3f(1.0f,1.0f,1.0f);
 	g_textColour = WHITE;
-	DrawVectorText("- HIGH SCORES -", VIEW_WIDTH/2 - 100, 20, GLYPH_WIDTH, 0);
+	DrawVectorText("- HIGH SCORES -", VIEW_WIDTH/2 - 8 * GLYPH_WIDTH, 20, GLYPH_WIDTH, 0);
 
 	char stemp[100];
 	for(int i=0; i<10; i++) {
 		//glColor3ubv((GLubyte *)&colourtable[i+coffset]);
 		sprintf_s(stemp, 100, "%02d   %-10s   %06d  %d", i+1,
-					HiScore_GetName(i),
-					HiScore_GetScore(i),
-					HiScore_GetLevel(i));
-		DrawVectorText(stemp, 48, 60 + i*20, GLYPH_WIDTH, 0);
+					hiScoreTable.GetName(i),
+					hiScoreTable.GetScore(i),
+					hiScoreTable.GetLevel(i));
+		DrawVectorText(stemp, VIEW_WIDTH/2 - 15 * GLYPH_WIDTH, 60 + i*20, GLYPH_WIDTH, 0);
 	}
 
 	//glColor3f(1.0f,1.0f,0.3f);
 	g_textColour = YELLOW;
-	DrawVectorText("Press fire to start", VIEW_WIDTH/2 - GLYPH_WIDTH*6, 260, (float)(GLYPH_WIDTH * 0.6), 0);
+	DrawVectorText("Press fire to start", VIEW_WIDTH/2 - 6 * GLYPH_WIDTH, 280, (float)(GLYPH_WIDTH * 0.6), 0);
 }
 
 // ******************** HISCORE ENTRY *********************
 void DoHiscoreEntry(unsigned int score, unsigned int level)
 {
-	//unsigned char r, g, b;
-	//char s[256];
 	char name[16] = "A";
 	//float title_scale = -4.0;
 	int namelen = 0;
 
-	if(!HiScore_Check(score))			// not a high score
+	if(!hiScoreTable.Check(score))			// not a high score
 		return;
 	
 	// Start sound and MOD stuff if not already playing
@@ -616,7 +612,7 @@ void DoHiscoreEntry(unsigned int score, unsigned int level)
 	// main loop
     bool quit = false;
     unsigned int flasher = 0;
-	unsigned int counter = 0;
+	//unsigned int counter = 0;
 	int debounce = 8;
 	double startTime = glfwGetTime();
 #ifdef DEBUG
@@ -673,9 +669,8 @@ void DoHiscoreEntry(unsigned int score, unsigned int level)
 			name[3] = 0;
 			WFPlaySound(4, SAMPLE_1UP);
 			// add this score[0] and name to the high-score[0] table
-			HiScore_Add(score, name, level, 0);
-			//SPU_NoteOff(0, SND_HISCORE);
-			HiScore_Save();
+			hiScoreTable.Add(score, name, level, 0);
+			hiScoreTable.Save();
 			quit = 1;
 			}
 		
@@ -739,7 +734,7 @@ void DoPause(void)
 
 		//glColor3f(1.0f,0.2f,0.0f);
 		g_textColour = RED;
-		DrawVectorText("--- PAUSED ---", VIEW_WIDTH/2 - 100, 120, GLYPH_WIDTH, 0);
+		DrawVectorText("--- PAUSED ---", VIEW_WIDTH/2 - 7 * GLYPH_WIDTH, 120, GLYPH_WIDTH, 0);
 
 		// Swap GL buffers
 		flip();
@@ -789,7 +784,7 @@ void AddCharge(int value)
 #define TUBE_ZSTEPS 4
 
 /// Make a 3D model of the specified tube
-void makeTubeModel2(E3D_Model *model, TUBEDATA *tube, Colour colour)
+void makeTubeModel2(E3D_Model *model, TUBEDATA *tube, const Colour &colour)
 {
 	int i, j;
 	model->Reset();
@@ -827,26 +822,6 @@ void makeTubeModel2(E3D_Model *model, TUBEDATA *tube, Colour colour)
 			line->colour = colour;
 		}
 	}
-
-/* old
-	for(i=0; i<tube->numVertices; i++) {
-		int startVert = tube->numVertices * 3;
-		int endVert = i + tube->numVertices;
-		Line *line = model->AddLine(startVert, endVert);
-		line->colour = colour;
-	}
-
-	for(i=0; i<tube->numVertices-1; i++) {
-		int startVert = i;
-		int endVert = i+1;
-		Line *line = model->AddLine(startVert, endVert);
-		line->colour = colour;
-		startVert = i + tube->numVertices;
-		endVert = i + tube->numVertices + 1;
-		line = model->AddLine(startVert, endVert);
-		line->colour = colour;
-	}
-*/
 }
 
 /// Get the centre and angle of a tube segment
@@ -1189,10 +1164,7 @@ enum RUNSTATE {
 int main(void) {
 	unsigned int reloadCount = 0;
 	unsigned int debounce = 0;
-	bool gameOver = true;
-	unsigned int level = 16;				// start level
 
-	int	frames;
 	double startTime = 0;
 	int x, y;
     double  t, t0, fps;
@@ -1214,8 +1186,7 @@ int main(void) {
 */
 
 	// initialise high-scores
-	HiScore_Init();
-	HiScore_Load();
+	hiScoreTable.Load();
 
     // Initialise GLFW
     if(glfwInit() != GL_TRUE) return(1);
@@ -1305,9 +1276,9 @@ int main(void) {
 		camera->SetPosition(0.0f, 0.5f, 30.0f);
 		camera->SetDirection(0.0f, 0.0f, -1.0f);
 		camera->SetUpVector(0.0f, 1.0f, 0.0f);
-		frames = 0;
-		level = DEBUG_START_LEVEL; 
-		gameOver = true;
+		int frames = 0;
+		unsigned int level = DEBUG_START_LEVEL; 				// start level
+		bool gameOver = true;
 		while(gameOver)
 			{
 			// set up title screen
@@ -1408,10 +1379,6 @@ int main(void) {
 
 			camera->SetPosition((float)(rand()%600 - 300), (float)(rand()%600 - 300), 1600.0f);
 
-			float dx = 0.5f;
-			float dy = 0.2f;
-			float dz = 0.0f;
-
 			// Main loop
 			int levelStart = 180;
 			int currentSegment = tube.numVertices / 2; //tube.startingSegment;
@@ -1465,7 +1432,7 @@ int main(void) {
 						dangle = dangle - (2 * PI);
 					else if (dangle < -PI)
 						dangle = dangle + (2 * PI);
-					printf("%f\n", dangle);
+					//printf("%f\n", dangle);
 					playerAngle = pObject->rotation.z + (dangle * 0.2f);
 					pObject->SetRotation(0.0f, 0.0f, playerAngle);
 					}
@@ -1485,8 +1452,8 @@ int main(void) {
 
 				// Tell E3D to render it's scene to the current GU context
 				// TODO: blur effects, camera jiggle effects, strobe effects, etc
-				Scene.Render(VIEW_WIDTH, VIEW_HEIGHT, true);
 				Scene.SetBackColour(0.0f, 0.0f, 0.0f);
+				Scene.Render(VIEW_WIDTH, VIEW_HEIGHT, true);
 
 				// Overlay 2D text on our display
 				Setup2DOverlay();
@@ -1504,7 +1471,7 @@ int main(void) {
 				else
 					{
 					g_textColour = WHITE;
-					sprintf_s(s, 64, "HISCORE %06d", HiScore_GetScore(0));
+					sprintf_s(s, 64, "HISCORE %06d", hiScoreTable.GetScore(0));
 					DrawVectorText(s, VIEW_WIDTH - GLYPH_WIDTH*16, 8, GLYPH_WIDTH, 0);
 					sprintf_s(s, 64, "SCORE %06d", g_score);
 					DrawVectorText(s, 16, 8, GLYPH_WIDTH, 0);
@@ -1729,14 +1696,12 @@ int main(void) {
 				if(reloadCount) reloadCount--;
 				} // wend running
 
-// TEST
 			// check if we got a high score
-			if(HiScore_Check(g_score))
+			if(hiScoreTable.Check(g_score))
 				{
-				HiScore_Add(g_score, "PL1", level, 0);
-				HiScore_Save();
+				hiScoreTable.Add(g_score, "PL1", level, 0);
+				hiScoreTable.Save();
 				}
-// END TEST
 
 			// check for reason play loop is finished
 			switch(runState)

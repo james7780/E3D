@@ -29,14 +29,17 @@ bool GotoSection(FILE *pf, char *sectionName)
 		fgets(buffer, 256, pf);
 		// remove \n off end
 		int len = strlen(buffer);
-		if(buffer[len-1] == '\n')
-			buffer[len-1] = 0;
-		// remove \r off end
-		if(buffer[len-2] == '\r')
-			buffer[len-2] = 0;
-		if(0 == strcmp(sectionName, buffer))
+		if (len > 1)
 			{
-			return true;
+			if(buffer[len-1] == '\n')
+				buffer[len-1] = 0;
+			// remove \r off end
+			if(buffer[len-2] == '\r')
+				buffer[len-2] = 0;
+			if(0 == strcmp(sectionName, buffer))
+				{
+				return true;
+				}
 			}
 		}
 
@@ -74,8 +77,9 @@ int LoadWeb(char *filename, TUBEDATA *tube)
 		{
 #ifdef DO_LOG
 		fprintf(plog, "Web file open failed.\n");
+		fclose(plog);
 #endif
-        return E3D_FAIL;
+		return E3D_FAIL;
 		}
 
 	// load tube name
@@ -111,7 +115,7 @@ int LoadWeb(char *filename, TUBEDATA *tube)
 		fclose(plog);
 #endif
 		fclose(pfile);
-        return E3D_FAIL;
+    return E3D_FAIL;
 		}
 
 	numverts = 0;

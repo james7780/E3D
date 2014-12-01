@@ -39,7 +39,7 @@ public:
 	float tx, ty, tz;						// behaviour stuff
 	short effect;							// special effect for instance
 
-	int GetModelNumber(void) { return modelNumber; };
+	int GetModelNumber(void) const { return modelNumber; };
 	E3D_Model *GetModel(void) { return model; };
 
 	Vector GetExtents();

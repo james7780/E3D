@@ -47,7 +47,7 @@ void E3D_Camera::SetPosition(const Vector &p)
 }
 
 /// Get the 3D position of the camera "eye" 
-Vector E3D_Camera::GetPosition(void)
+Vector E3D_Camera::GetPosition() const
 {
 	return m_pos;
 }
@@ -67,7 +67,7 @@ void E3D_Camera::SetDirection(float x1, float y1, float z1)
 }
 
 /// Get the direction that the camera "eye" is facing 
-Vector E3D_Camera::GetDirection(void)
+Vector E3D_Camera::GetDirection() const
 {
 	return m_dirn;
 }
@@ -87,7 +87,7 @@ void E3D_Camera::SetUpVector(float x1, float y1, float z1)
 }
 
 /// Get the camera "up" vector 
-Vector E3D_Camera::GetUpVector(void)
+Vector E3D_Camera::GetUpVector() const
 {
 	return m_up;
 }
@@ -117,7 +117,7 @@ void E3D_Camera::SetRoll(float r1)
 
 /// Set the camera "roll" (ie: twist angle about the view direction vector)
 /// @return 	Roll angle in radians
-float E3D_Camera::GetRoll(void)
+float E3D_Camera::GetRoll() const
 {
 	return m_roll;
 }
@@ -130,7 +130,7 @@ void E3D_Camera::SetFOV(float fov)
 }
 
 /// @return 	Camera's field of view in degrees
-float E3D_Camera::GetFOV(void)
+float E3D_Camera::GetFOV() const
 {
 	return m_FOV;
 };

@@ -40,7 +40,7 @@ public:
 	E3D_MaterialLib();
 	virtual ~E3D_MaterialLib();
 
-	int GetNumMaterials(void) {	return m_numMaterials; };
+	int GetNumMaterials(void) const {	return m_numMaterials; };
 	int AddMaterial(E3D_Material *material);
 	E3D_Material *GetMaterial(int index);
 	int GetMaterialIndex(char *name);
