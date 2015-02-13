@@ -168,6 +168,7 @@ Improve control
 	- Jump (limited count, or must be enabled)
 	- Dash (moves 4 "blocks" sideways)
 Improve effects
+	- Superzapper effect (web pulses?)
 	- Enemy/player explosion effects
 	- Bullet trail effects
 	- More particles for bigger enemies
@@ -191,7 +192,11 @@ More recognisable "Areas":
 	- Zones give players more concept of progression
 		"I got to green zone!"
 	- Players can warp to a zone they've got to before.
-	- Bonus rounds between zones
+	- Bonus rounds between zones/areas (every 4 levels)
+		- Galaga/Gyruss-style shoot the alien formations (no grid)
+		- Collect the cherries
+	- Boss battles
+		- Every 8 levels
 
 Challenge
 	- Using shooter skills, strategy and powerups to defeat webs
