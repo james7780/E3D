@@ -1201,8 +1201,8 @@ int main(void) {
 
 	glfwSetWindowSizeCallback( ResizeWindow );
 
-    // Set vertical sync (number of frames before swapping buffers)
-    glfwSwapInterval(1);
+	// Set vertical sync (number of frames before swapping buffers)
+	glfwSwapInterval(0);
 
 	// Set up our OpenGL env and build our display lists
 	printf( "InitGL() returned %d\n", InitGL() );
